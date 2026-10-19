@@ -10,6 +10,11 @@ Este repositório contém uma **réplica didática** do monolito, com C# no esti
 
 ## O legado
 
+O primeiro incremento implementado é uma fachada SOAP que encaminha todas as
+operações ao legado. Instruções de execução, verificações somente de leitura e
+rollback estão em [fachada/README.md](fachada/README.md). A extração de serviços
+descrita no restante do desafio ainda não faz parte deste incremento.
+
 ```
 legado/
   src/NotaCarioca.Dominio/      VB.NET — cálculo de ISS, validação de CPF/CNPJ, competência

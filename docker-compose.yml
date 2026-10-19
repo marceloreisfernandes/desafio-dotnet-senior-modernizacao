@@ -26,11 +26,27 @@ services:
       ASPNETCORE_URLS: http://+:8080
       NFSE_CONNECTION_STRING: "User Id=NFSE_OWNER;Password=nfse_dev_123;Data Source=oracle:1521/FREEPDB1;Min Pool Size=2;Connection Timeout=30"
     mem_limit: 3g
-    ports:
-      - "127.0.0.1:8080:8080"
+    expose:
+      - "8080"
     depends_on:
       oracle:
         condition: service_healthy
+
+  fachada:
+    build:
+      context: .
+      dockerfile: fachada/Dockerfile
+    environment:
+      TZ: America/Sao_Paulo
+      ASPNETCORE_URLS: http://+:8080
+      Legacy__BaseUrl: http://webservices:8080
+      Legacy__PublicServiceUrl: http://localhost:8080/NfseWS.asmx
+      Legacy__TimeoutSeconds: "120"
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      webservices:
+        condition: service_started
 
 volumes:
   oracle-data:

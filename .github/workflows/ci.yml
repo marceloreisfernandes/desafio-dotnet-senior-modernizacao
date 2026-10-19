@@ -17,3 +17,5 @@ jobs:
         run: dotnet build legado/NotaCarioca.sln -c Release
       - name: Testes unitarios (net8.0)
         run: dotnet test legado/tests/NotaCarioca.Testes -c Release -f net8.0 --no-build
+      - name: Testes da fachada HTTP/SOAP (net8.0)
+        run: dotnet test fachada/tests/NotaCarioca.Fachada.Testes -c Release
