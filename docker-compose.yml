@@ -41,7 +41,12 @@ services:
       ASPNETCORE_URLS: http://+:8080
       Legacy__BaseUrl: http://webservices:8080
       Legacy__PublicServiceUrl: http://localhost:8080/NfseWS.asmx
-      Legacy__TimeoutSeconds: "120"
+      Legacy__TimeoutSeconds: "${LEGACY_TIMEOUT_SECONDS:-660}"
+      Modern__BaseUrl: http://consulta:8080
+      Routing__File: /app/routing/routing.json
+    volumes:
+      # Mount the directory so atomic file replacement is visible inside the container.
+      - ./fachada/config:/app/routing:ro
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:

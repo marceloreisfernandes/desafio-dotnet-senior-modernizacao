@@ -1,0 +1,10 @@
+{
+  "KillSwitch": true,
+  "Operations": {
+    "ConsultarNfse": {
+      "Mode": "LEGACY",
+      "Percentage": 0,
+      "Providers": []
+    }
+  }
+}

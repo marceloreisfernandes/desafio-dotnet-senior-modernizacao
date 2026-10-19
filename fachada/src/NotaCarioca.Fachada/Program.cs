@@ -21,6 +21,25 @@ namespace NotaCarioca.Fachada
             options.Validate();
             builder.Services.AddSingleton(options);
             builder.Services.AddSingleton<LegacyProxy>();
+            var modern = new ModernOptions();
+            builder.Configuration.GetSection("Modern").Bind(modern);
+            modern.Validate();
+            builder.Services.AddSingleton(modern);
+            builder.Services.AddSingleton(new RoutingConfiguration(Path.GetFullPath(
+                builder.Configuration["Routing:File"] ?? "routing.json", builder.Environment.ContentRootPath)));
+            builder.Services.AddSingleton<SoapRouting>();
+            builder.Services.AddSingleton<ShadowConsultation>();
+            builder.Services.AddHostedService(sp => sp.GetRequiredService<ShadowConsultation>());
+            builder.Services.AddHttpClient("modern", client =>
+            {
+                client.BaseAddress = new Uri(modern.BaseUrl);
+                client.Timeout = Timeout.InfiniteTimeSpan;
+            }).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None,
+                UseCookies = false, UseProxy = false, ConnectTimeout = TimeSpan.FromSeconds(5),
+                PooledConnectionLifetime = TimeSpan.FromMinutes(5)
+            }); // The modern consultation also has exactly one attempt.
             builder.Services.AddHttpClient("legacy", client =>
             {
                 client.BaseAddress = new Uri(options.BaseUrl);
@@ -40,9 +59,7 @@ namespace NotaCarioca.Fachada
             app.MapGet("/health/live", () => Results.Text("OK"));
             app.MapGet("/health", (HttpContext ctx, LegacyProxy proxy) => proxy.ForwardAsync(ctx, "/health"));
             app.MapGet("/health/ready", (HttpContext ctx, LegacyProxy proxy) => proxy.ForwardAsync(ctx, "/health"));
-            // No operation parsing or allowlist: every SOAP action stays with the legacy service.
-            app.Map("/NfseWS.asmx", (HttpContext ctx, LegacyProxy proxy) =>
-                proxy.ForwardAsync(ctx, "/NfseWS.asmx" + ctx.Request.QueryString));
+            app.Map("/NfseWS.asmx", (HttpContext ctx, SoapRouting routing) => routing.ForwardAsync(ctx));
             return app;
         }
     }

@@ -27,7 +27,7 @@ Cookies recebidos são encaminhados como headers, sem CookieContainer. Uma falha
 após envio de um POST pode deixar o resultado do negócio desconhecido; a fachada
 nunca repete a operação para tentar ocultar essa incerteza.
 
-Timeout total configurável de 1 a 300 segundos (padrão 120), incluindo upload e
+Timeout total configurável de 1 a 660 segundos (padrão 660), incluindo upload e
 download; conexão limitada a 5 segundos. Cancelamento do cliente interrompe a
 chamada ao upstream. Falha de comunicação retorna HTTP 502, timeout retorna 504,
 com texto genérico. Depois que headers/corpo já foram enviados, abortar a conexão
@@ -65,3 +65,58 @@ continua sem limite como no legado; controles de capacidade ficam para outro pas
 
 Referências: [IHttpClientFactory](https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory)
 e [RFC 9110, Connection](https://www.rfc-editor.org/rfc/rfc9110.html#section-7.6.1).
+
+## Incremento seguinte — roteamento Strangler Fig em runtime
+
+Esta seção substitui as restrições do primeiro incremento sobre ausência de
+parsing, serviço novo, sombra e flags. O proxy/streaming e a consulta independente
+são preservados; não há novas dependências de produção, conexão Oracle na fachada,
+objetos de banco ou mudança de contrato WSDL. A extração segue a ADR 0002.
+
+A fachada admite apenas a ação canônica ConsultarNfse com envelope/wrapper/IM
+inequívocos e corpo limitado. Todas as demais operações e entradas não elegíveis
+ficam opacas no legado, inclusive ações desconhecidas e todas as escritas.
+A IM declarada é metadado de seleção, nunca autenticação/autorização.
+
+Decisão: arquivo JSON local obrigatório para habilitar migração, com kill switch,
+regra por operação, allowlist de IM e percentual determinístico por SHA-256 da
+operação/IM. Sem configuração válida, LEGACY. Ler snapshot limitado a 16 KiB a
+cada decisão e novamente após upload/inspeção; não manter último estado permissivo.
+Operadores substituem o arquivo atomicamente no diretório montado somente para
+leitura no processo. Não há endpoint de gestão, banco/Redis ou serviço de flags.
+A propagação é na próxima leitura, sem polling/restart/deploy, sujeita à latência
+do filesystem local; não coordena múltiplas réplicas.
+
+LEGACY usa o proxy original. NEW usa o mesmo transporte, com origem moderna fixa
+e uma tentativa, sem replay para legado em falhas ou resultados ambíguos. O kill
+switch retorna chamadas seguintes ao legado; chamadas já despachadas terminam.
+O WSDL e health/ready continuam no legado. Não disponibilizar o WSDL parcial novo
+como contrato público.
+
+SHADOW transmite integralmente a resposta legada e, após sua cópia, agenda somente
+a leitura moderna. Reserva não bloqueante inclui o tempo no legado, canal e número
+de consumidores são limitados (padrão 2), deadline próprio 2 s, buffers apenas em
+memória (requisição até 1 MiB, respostas até 2 MiB). Saturação descarta observações;
+erros/cancelamento/limites são observados sem afetar o cliente. Não há retries,
+tarefas ilimitadas ou disco para payloads. A sombra não copia credenciais/cookies.
+Cancelamento HTTP não garante interrupção imediata do SELECT remoto.
+
+Comparar status/content type/bytes sem guardar identificadores ou payloads. Logs
+próprios têm somente categorias fixas. Paridade exata, divergência inesperada e
+rejeição estrita documentada de referência a controle XML (legado com notas vs
+novo E001 exato) são categorias distintas. Não normalizar diferenças fiscais ou
+mascarar erros internos como esperados. DTD/profundidade não seguros para obter
+metadados continuam no legado. Sombra duplica SELECTs e pode aumentar carga;
+consistência por instrução não garante snapshot comum entre serviços.
+
+Reversão: kill switch, conferir leitura/health legados, então parar moderno se
+necessário. Sem rollback de dados. O limite legado passa de 120 s (teto 300 s)
+para 660 s, com 60 s de margem sobre o cliente de lotes de 600 s. Mantém-se um
+prazo total finito, sem infraestrutura por operação. Streaming não renova o prazo;
+clientes podem cancelar antes e o transporte propaga esse cancelamento. O legado
+original não tinha limite total equivalente: um 504/desconexão não prova ausência
+de efeito fiscal, não garante cancelamento Oracle e nunca autoriza retry automático.
+Limites de produção incluem credencial Oracle de desenvolvimento privilegiada,
+ausência de autorização nova, métricas/auditoria central, coordenação de réplicas,
+certificação de carga e interrupção garantida de trabalho remoto.
+Formato, procedimento operacional e testes reproduzíveis: [README da fachada](../../fachada/README.md).

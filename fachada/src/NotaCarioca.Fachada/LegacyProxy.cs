@@ -19,10 +19,12 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
         return headers;
     }
 
-    public async Task ForwardAsync(HttpContext context, string pathAndQuery)
+    public async Task ForwardAsync(HttpContext context, string pathAndQuery,
+        string upstream = "legacy", int? timeoutSeconds = null, ResponseCapture? capture = null,
+        CancellationToken budget = default)
     {
-        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(context.RequestAborted);
-        deadline.CancelAfter(TimeSpan.FromSeconds(options.TimeoutSeconds));
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(context.RequestAborted, budget);
+        deadline.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds ?? options.TimeoutSeconds));
         var token = deadline.Token;
         var wsdl = HttpMethods.IsGet(context.Request.Method) &&
             (context.Request.Path.Equals("/NfseWS.asmx", StringComparison.OrdinalIgnoreCase) ||
@@ -49,14 +51,15 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
                     request.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
             }
 
-            using var client = clients.CreateClient("legacy");
+            using var client = clients.CreateClient(upstream);
             using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
-            // Buffer only WSDL, with an XML size bound. SOAP bodies are never parsed or reserialized.
+            // Only WSDL is reserialized. Optional bounded shadow capture preserves the SOAP bytes.
             byte[]? publicWsdl = null;
             if (wsdl && response.IsSuccessStatusCode)
                 publicWsdl = await RewriteWsdlAsync(response.Content, token);
 
             context.Response.StatusCode = (int)response.StatusCode;
+            capture?.Start(response);
             var responseExcluded = HopHeaders(response.Headers.TryGetValues("Connection", out var values) ? values : []);
             if (publicWsdl is not null)
                 responseExcluded.UnionWith(["Content-Length", "ETag", "Last-Modified", "Content-MD5", "Digest", "Content-Encoding"]);
@@ -69,6 +72,18 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
                 context.Response.ContentLength = publicWsdl.Length;
                 await context.Response.Body.WriteAsync(publicWsdl, token);
             }
+            else if (capture is not null)
+            {
+                await using var body = await response.Content.ReadAsStreamAsync(token);
+                var buffer = new byte[8192];
+                int count;
+                while ((count = await body.ReadAsync(buffer, token)) != 0)
+                {
+                    capture.Append(buffer.AsSpan(0, count));
+                    await context.Response.Body.WriteAsync(buffer.AsMemory(0, count), token);
+                }
+                capture.Complete = true;
+            }
             else
                 await response.Content.CopyToAsync(context.Response.Body, token);
         }
@@ -78,11 +93,13 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
         }
         catch (OperationCanceledException)
         {
-            await FailAsync(context, StatusCodes.Status504GatewayTimeout, "Tempo limite do legado excedido.");
+            await FailAsync(context, StatusCodes.Status504GatewayTimeout, upstream == "legacy" ?
+                "Tempo limite do legado excedido." : "Tempo limite da consulta excedido.");
         }
         catch (Exception ex) when (ex is HttpRequestException or IOException or XmlException or InvalidDataException)
         {
-            await FailAsync(context, StatusCodes.Status502BadGateway, "Falha de comunicação com o legado.");
+            await FailAsync(context, StatusCodes.Status502BadGateway, upstream == "legacy" ?
+                "Falha de comunicação com o legado." : "Falha de comunicação com a consulta.");
         }
     }
 
@@ -121,7 +138,7 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
     private async Task FailAsync(HttpContext context, int status, string message)
     {
         // No exceptions, URLs, SOAPAction, headers or payloads in the log.
-        logger.LogWarning("Falha no encaminhamento ao legado. HTTP {StatusCode}", status);
+        logger.LogWarning("Falha no encaminhamento SOAP. HTTP {StatusCode}", status);
         if (context.Response.HasStarted)
         {
             // A partial SOAP response must fail at the transport, never look like a complete success.

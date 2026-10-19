@@ -15,7 +15,8 @@ docker compose up -d --no-deps consulta
 ```
 
 `consulta:8080` fica somente na rede interna do Compose. Não há porta publicada.
-`localhost:8080` continua sendo a fachada que encaminha tudo ao legado. Não
+`localhost:8080` continua sendo a fachada; o padrão é legado e a adoção de
+ConsultarNfse é controlada pelo [roteamento runtime](../fachada/README.md). Não
 recriar os serviços existentes para testar a extração. Não executar `just lote`,
 scripts de lotes, runner geral de exemplos ou operações de cancelamento.
 
@@ -106,6 +107,7 @@ população, todos os erros ou Oracle 19c de produção.
 suplementares de overflow e DTD. A divergência DTD tem expectativa explícita
 também para o serviço novo; qualquer resultado diferente falha a verificação.
 
-Rollback: `docker compose stop consulta`. A fachada pública permanece no legado.
+Rollback: ativar primeiro o kill switch da fachada e conferir a consulta legada;
+então `docker compose stop consulta`. Sem flag válida, a fachada usa o legado.
 
 Correções da revisão independente e evidência atual: [relatório da revisão](../docs/revisao-consultar-nfse.md).

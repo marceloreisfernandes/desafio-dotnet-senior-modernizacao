@@ -2,6 +2,11 @@
 
 Status: implementada como serviço interno; ver [verificação](../verificacao-consultar-nfse.md).
 
+O incremento posterior de adoção pública controlada está na seção Strangler Fig
+da [ADR 0001](0001-fachada-soap-legado.md). As afirmações abaixo de fachada sempre
+legada/ausência de flags descrevem a extração original. Para rollback atual,
+ativar primeiro o kill switch conforme o [README operacional](../../fachada/README.md).
+
 ## Contexto e escopo
 
 O ponto de partida é `229f6278056d250d641d61044bec6ee46ddeea99`, com fachada

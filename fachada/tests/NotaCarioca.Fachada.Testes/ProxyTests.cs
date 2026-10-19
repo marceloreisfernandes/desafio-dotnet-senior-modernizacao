@@ -199,8 +199,10 @@ public sealed class ProxyTests
         Assert.AreEqual(1, pair.Calls);
     }
 
-    [TestMethod]
-    public async Task ClientDisconnectCancelsUpstream()
+    [DataTestMethod]
+    [DataRow("GET")]
+    [DataRow("POST")]
+    public async Task ClientDisconnectCancelsUpstream(string method)
     {
         var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var cancelled = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -211,7 +213,9 @@ public sealed class ProxyTests
             catch (OperationCanceledException) { cancelled.TrySetResult(); }
         });
         using var cancellation = new CancellationTokenSource();
-        var pending = pair.Client.GetAsync("/NfseWS.asmx", cancellation.Token);
+        using var request = new HttpRequestMessage(new HttpMethod(method), "/NfseWS.asmx");
+        if (method == "POST") request.Content = new StringContent("synthetic write; controlled upstream only");
+        var pending = pair.Client.SendAsync(request, cancellation.Token);
         await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
         cancellation.Cancel();
         await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () => await pending);
@@ -280,6 +284,9 @@ public sealed class ProxyTests
     public void InvalidConfigurationFailsAtStartup()
     {
         Assert.ThrowsException<InvalidOperationException>(() => new ProxyOptions { TimeoutSeconds = 0 }.Validate());
+        Assert.ThrowsException<InvalidOperationException>(() => new ProxyOptions { TimeoutSeconds = 661 }.Validate());
+        Assert.AreEqual(660, new ProxyOptions().TimeoutSeconds);
+        foreach (var seconds in new[] { 1, 600, 660 }) new ProxyOptions { TimeoutSeconds = seconds }.Validate();
         Assert.ThrowsException<InvalidOperationException>(() => new ProxyOptions { BaseUrl = "file:///etc/" }.Validate());
         Assert.ThrowsException<InvalidOperationException>(() => new ProxyOptions { PublicServiceUrl = "http://public/other" }.Validate());
     }
