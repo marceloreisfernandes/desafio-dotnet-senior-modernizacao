@@ -1,0 +1,569 @@
+[
+  {
+    "name": "representative",
+    "replace": [],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3,
+      "next": "false"
+    }
+  },
+  {
+    "name": "representative-filter",
+    "replace": [],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 1,
+      "next": "false"
+    },
+    "example": "04e-consultar-nfse-por-tomador.xml"
+  },
+  {
+    "name": "malformed-inner",
+    "replace": [],
+    "expected": {
+      "status": 200,
+      "code": "E001",
+      "invoices": 0
+    },
+    "input": "<bad"
+  },
+  {
+    "name": "wrong-root",
+    "replace": [],
+    "expected": {
+      "status": 200,
+      "code": "E001",
+      "invoices": 0
+    },
+    "input": "<Other/>"
+  },
+  {
+    "name": "missing-provider",
+    "replace": [],
+    "expected": {
+      "status": 200,
+      "code": "E010",
+      "invoices": 0
+    },
+    "input": "<ConsultarNfseEnvio/>"
+  },
+  {
+    "name": "unknown-provider",
+    "replace": [
+      [
+        "10000001",
+        "99999999"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E010",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "inactive-provider",
+    "replace": [
+      [
+        "10000001",
+        "10000030"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E010",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "provider-before-period",
+    "replace": [
+      [
+        "10000001",
+        "99999999"
+      ],
+      [
+        "2026-10-01",
+        "bad"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E010",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "invalid-recipient",
+    "replace": [
+      [
+        "<Pagina>1</Pagina>",
+        "<Tomador><CpfCnpj><Cnpj>123</Cnpj></CpfCnpj></Tomador>"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E020",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "recipient-before-period",
+    "replace": [
+      [
+        "<Pagina>1</Pagina>",
+        "<Tomador><CpfCnpj><Cpf>11111111111</Cpf></CpfCnpj></Tomador>"
+      ],
+      [
+        "2026-10-01",
+        "bad"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E020",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "invalid-start",
+    "replace": [
+      [
+        "2026-10-01",
+        "bad"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E030",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "invalid-end",
+    "replace": [
+      [
+        "2026-10-31",
+        "bad"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E030",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "inverted-period",
+    "replace": [
+      [
+        "2026-10-01",
+        "2026-11-01"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E030",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "period-32-days",
+    "replace": [
+      [
+        "2026-10-31",
+        "2026-11-02"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E030",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "period-31-days",
+    "replace": [
+      [
+        "2026-10-31",
+        "2026-11-01"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "same-day",
+    "replace": [
+      [
+        "2026-10-31",
+        "2026-10-01"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E040",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "final-day-exclusive",
+    "replace": [
+      [
+        "2026-10-31",
+        "2026-10-03"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 1
+    }
+  },
+  {
+    "name": "times-truncated",
+    "replace": [
+      [
+        "2026-10-01",
+        "2026-10-01T23:59:59"
+      ],
+      [
+        "2026-10-31",
+        "2026-10-03T23:59:59"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 1
+    }
+  },
+  {
+    "name": "invariant-us-dates",
+    "replace": [
+      [
+        "2026-10-01",
+        "10/01/2026"
+      ],
+      [
+        "2026-10-31",
+        "10/31/2026"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "missing-page",
+    "replace": [
+      [
+        "<Pagina>1</Pagina>",
+        ""
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "zero-page",
+    "replace": [
+      [
+        "<Pagina>1</Pagina>",
+        "<Pagina>0</Pagina>"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "negative-page",
+    "replace": [
+      [
+        "<Pagina>1</Pagina>",
+        "<Pagina>-1</Pagina>"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "text-page",
+    "replace": [
+      [
+        "<Pagina>1</Pagina>",
+        "<Pagina>oops</Pagina>"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "out-of-int-page",
+    "replace": [
+      [
+        "<Pagina>1</Pagina>",
+        "<Pagina>2147483648</Pagina>"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "second-empty-page",
+    "replace": [
+      [
+        "<Pagina>1",
+        "<Pagina>2"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E040",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "overflow-page",
+    "replace": [
+      [
+        "<Pagina>1",
+        "<Pagina>42949673"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E040",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "ignored-provider-document",
+    "replace": [
+      [
+        "11100003000113",
+        "invalid"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "trimmed-im",
+    "replace": [
+      [
+        "10000001",
+        " 10000001 "
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "cancelled-included",
+    "replace": [
+      [
+        "2026-10-01",
+        "2026-08-01"
+      ],
+      [
+        "2026-10-31",
+        "2026-09-01"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 5
+    }
+  },
+  {
+    "name": "replaced-included",
+    "replace": [
+      [
+        "10000001",
+        "10000003"
+      ],
+      [
+        "2026-10-01",
+        "2026-08-01"
+      ],
+      [
+        "2026-10-31",
+        "2026-09-01"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 6
+    }
+  },
+  {
+    "name": "stored-iss",
+    "replace": [
+      [
+        "2026-10-01",
+        "2026-09-01"
+      ],
+      [
+        "2026-10-31",
+        "2026-10-01"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 11
+    }
+  },
+  {
+    "name": "mei-zero-rate",
+    "replace": [
+      [
+        "10000001",
+        "10000021"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "leading-zero-provider",
+    "replace": [
+      [
+        "10000001",
+        "10000005"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "empty-range",
+    "replace": [
+      [
+        "2026-10-01",
+        "2020-10-01"
+      ],
+      [
+        "2026-10-31",
+        "2020-10-31"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E040",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "default-namespace-inner",
+    "replace": [
+      [
+        "<ConsultarNfseEnvio>",
+        "<ConsultarNfseEnvio xmlns=\"urn:inner\">"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": "E010",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "prefixed-root",
+    "replace": [],
+    "expected": {
+      "status": 200,
+      "code": "E001",
+      "invoices": 0
+    },
+    "input": "<p:ConsultarNfseEnvio xmlns:p=\"urn:inner\"/>"
+  },
+  {
+    "name": "missing-input",
+    "replace": [],
+    "expected": {
+      "status": 200,
+      "code": "E001",
+      "invoices": 0
+    },
+    "envelope": "<empty/>"
+  },
+  {
+    "name": "malformed-envelope",
+    "replace": [],
+    "expected": {
+      "status": 500,
+      "code": null,
+      "invoices": 0
+    },
+    "envelope": "<broken"
+  },
+  {
+    "name": "formatted-filter",
+    "replace": [
+      [
+        "01234567000195",
+        "01.234.567/0001-95"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 1
+    },
+    "example": "04e-consultar-nfse-por-tomador.xml"
+  },
+  {
+    "name": "letters-in-filter",
+    "replace": [
+      [
+        "01234567000195",
+        "xx01234567000195yy"
+      ]
+    ],
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 1
+    },
+    "example": "04e-consultar-nfse-por-tomador.xml"
+  }
+]

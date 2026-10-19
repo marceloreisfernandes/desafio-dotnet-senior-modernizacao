@@ -1,0 +1,106 @@
+[
+  {
+    "case": "first-cpf-later-cnpj",
+    "request_sha256": "860cb215b9e2c1cd4cf9992ba667254f2221fee6dce4a4beddbaacfa8285de0f",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "first-empty-later-cnpj",
+    "request_sha256": "33a284bc0477b391b334312c5de18a48d544192e60f665df4601cd28940d1da9",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "doctype-without-entities",
+    "request_sha256": "638ad49cb2711e655437124a8473e8478d5aa467d27989599339bdb896f24452",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": false,
+    "classification": "deliberate-security-doctype-without-entities"
+  },
+  {
+    "case": "invalid-character-reference",
+    "request_sha256": "f856032bc4b9fcd68341b396f0cfbb205c2064ca6352f578185954d781922b76",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": false,
+    "classification": "deliberate-security-invalid-character-reference"
+  }
+]

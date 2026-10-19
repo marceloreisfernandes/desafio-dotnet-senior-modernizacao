@@ -1,0 +1,50 @@
+[
+  {
+    "name": "first-cpf-later-cnpj",
+    "input": "<ConsultarNfseEnvio><Prestador><InscricaoMunicipal>10000001</InscricaoMunicipal></Prestador><PeriodoEmissao><DataInicial>2026-10-01</DataInicial><DataFinal>2026-10-31</DataFinal></PeriodoEmissao><Tomador><CpfCnpj><Cpf>52998224725</Cpf></CpfCnpj></Tomador><Tomador><CpfCnpj><Cnpj>01234567000195</Cnpj></CpfCnpj></Tomador></ConsultarNfseEnvio>",
+    "expected": {
+      "status": 200,
+      "code": "E040",
+      "invoices": 0
+    }
+  },
+  {
+    "name": "first-empty-later-cnpj",
+    "input": "<ConsultarNfseEnvio><Prestador><InscricaoMunicipal>10000001</InscricaoMunicipal></Prestador><PeriodoEmissao><DataInicial>2026-10-01</DataInicial><DataFinal>2026-10-31</DataFinal></PeriodoEmissao><Tomador/><Tomador><CpfCnpj><Cnpj>01234567000195</Cnpj></CpfCnpj></Tomador></ConsultarNfseEnvio>",
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    }
+  },
+  {
+    "name": "doctype-without-entities",
+    "input": "<!DOCTYPE ConsultarNfseEnvio><ConsultarNfseEnvio><Prestador><InscricaoMunicipal>10000001</InscricaoMunicipal></Prestador><PeriodoEmissao><DataInicial>2026-10-01</DataInicial><DataFinal>2026-10-31</DataFinal></PeriodoEmissao></ConsultarNfseEnvio>",
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    },
+    "modern_expected": {
+      "status": 200,
+      "code": "E001",
+      "invoices": 0
+    },
+    "divergence": "deliberate-security-doctype-without-entities"
+  },
+  {
+    "name": "invalid-character-reference",
+    "input": "<ConsultarNfseEnvio><Prestador><InscricaoMunicipal>10000001</InscricaoMunicipal></Prestador><PeriodoEmissao><DataInicial>2026-10-01</DataInicial><DataFinal>2026-10-31</DataFinal></PeriodoEmissao><Ignorado>&#1;</Ignorado></ConsultarNfseEnvio>",
+    "expected": {
+      "status": 200,
+      "code": null,
+      "invoices": 3
+    },
+    "modern_expected": {
+      "status": 200,
+      "code": "E001",
+      "invoices": 0
+    },
+    "divergence": "deliberate-security-invalid-character-reference"
+  }
+]

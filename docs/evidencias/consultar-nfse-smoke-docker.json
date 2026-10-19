@@ -1,0 +1,48 @@
+[
+  {
+    "path": "/health/live",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "bytes": 2,
+    "sha256": "565339bc4d33d72817b583024112eb7f5cdf3e5eef0252d6ec1b9c9a94e12bb3",
+    "cache_control": "no-store"
+  },
+  {
+    "path": "/health/ready",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "bytes": 2,
+    "sha256": "565339bc4d33d72817b583024112eb7f5cdf3e5eef0252d6ec1b9c9a94e12bb3",
+    "cache_control": "no-store"
+  },
+  {
+    "path": "/openapi/v1.json",
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 8344,
+    "sha256": "95e286d2b3f96c48ae51ee7c37d4bb0373c12507cffb2065aed2dc78402dff12",
+    "cache_control": "no-store"
+  },
+  {
+    "path": "/NfseWS.asmx?wsdl",
+    "status": 200,
+    "content_type": "text/xml; charset=utf-8",
+    "bytes": 1880,
+    "sha256": "7272d56180a2189ccfe3ec62f1e28b0ef51aa08829981660321a3c3c5d4aee88",
+    "cache_control": "no-store",
+    "string_fields_and_action_valid": true
+  },
+  {
+    "path": "/api/v1/prestadores/10000001/nfse?dataInicial=2026-10-02&dataFinal=2026-10-02",
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 729,
+    "sha256": "03085dc6df199779869e35fe5cb96eb02b45a23dd8388f476f2211db786bcaf9",
+    "cache_control": "no-store",
+    "invoices": 1,
+    "page": 1,
+    "page_size": 50,
+    "next": false,
+    "recipient_zero_preserved": true
+  }
+]

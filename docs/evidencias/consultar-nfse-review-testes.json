@@ -1,0 +1,521 @@
+{
+  "sdk": "8.0.131",
+  "runtime": "8.0.31",
+  "provider": "23.26.301",
+  "runs": [
+    {
+      "file": "review-all.trx",
+      "sha256": "28900912eea8b3c66b4110ee40aae54a03e8c1bba6a7093abba1acef85fe3da6",
+      "counters": {
+        "total": "92",
+        "executed": "92",
+        "passed": "91",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "review-final.trx",
+      "sha256": "c32aa6ad39ae90e0ba31744574cdb62cdac6def64ad67063ea49b12354899539",
+      "counters": {
+        "total": "92",
+        "executed": "92",
+        "passed": "92",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "review-final-http-depth.trx",
+      "sha256": "47e92325492391f212dfe6e66a850efa91bba79d45e6e6e73e1cd3469b927c5f",
+      "counters": {
+        "total": "93",
+        "executed": "93",
+        "passed": "93",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "tests": [
+        {
+          "name": "WsdlAdvertisesOnlyExtractedReadAndOpenApiDescribesErrors",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ExtraRowIsNeverDecoded",
+          "outcome": "Passed"
+        },
+        {
+          "name": "UnsupportedActionCannotInvokeApplication",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ReviewRecipientParityAndStrictXmlDivergencesAgainstOriginalHost",
+          "outcome": "Passed"
+        },
+        {
+          "name": "StrictParserDivergencesAreDeliberate",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ErrorBytesMatchOriginal",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OnlyFirstRecipientAndLegacyDocumentPrecedence",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InnerDtdIsExplicitSecurityDivergence",
+          "outcome": "Passed"
+        },
+        {
+          "name": "StoredExamplesContainUnpaddedRecipientAndOriginalIss",
+          "outcome": "Passed"
+        },
+        {
+          "name": "SerializerMatchesLegacyIncludingEscapesStatusesDocumentsAndStoredTax",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InternalDtdDivergenceIsMeasuredAgainstOriginal",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "LegacyPageOverflowAndDatesStayAtTheSoapEdge",
+          "outcome": "Passed"
+        },
+        {
+          "name": "LegacySerializerGoldenRow",
+          "outcome": "Passed"
+        },
+        {
+          "name": "SerializerMatchesLegacyIncludingEscapesStatusesDocumentsAndStoredTax",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OversizedSoapBodyIsDocumented413WithoutCallingApplication",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ExcessiveDepthKeepsDocumentedSoapErrorsOverHttp",
+          "outcome": "Passed"
+        },
+        {
+          "name": "LegacyErrorContract",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "DepthIsBoundedBeforeInnerText",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ErrorBytesMatchOriginal",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ModernPageArithmeticDoesNotOverflow",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ExtraRowIsNeverDecoded",
+          "outcome": "Passed"
+        },
+        {
+          "name": "RestSuccessKeepsZeroesDecimalsStatesAndInclusiveFinalDay",
+          "outcome": "Passed"
+        },
+        {
+          "name": "PaginationBoundariesRetainOracleAmountsAndStates",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidProviderIdentifier",
+          "outcome": "Passed"
+        },
+        {
+          "name": "LegacyErrorContract",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InactiveProviderDoesNotReadInvoices",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "DepthIsBoundedBeforeInnerText",
+          "outcome": "Passed"
+        },
+        {
+          "name": "UnsupportedActionCannotInvokeApplication",
+          "outcome": "Passed"
+        },
+        {
+          "name": "LegacyErrorContract",
+          "outcome": "Passed"
+        },
+        {
+          "name": "DependencyTimeoutHasRest503AndSanitizedSoapFault",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ClientCancellationReachesOperation",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "PaginationBoundariesRetainOracleAmountsAndStates",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OnlyFirstRecipientAndLegacyDocumentPrecedence",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OracleEmptyPagesOverflowAndPooledReuse",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "PaginationBoundariesRetainOracleAmountsAndStates",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ExtraRowIsNeverDecoded",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OnlyFirstRecipientAndLegacyDocumentPrecedence",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ExtraRowIsNeverDecoded",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OracleParametersCannotBroadenProviderOrRecipientQuery",
+          "outcome": "Passed"
+        },
+        {
+          "name": "UnsupportedActionCannotInvokeApplication",
+          "outcome": "Passed"
+        },
+        {
+          "name": "LegacyErrorContract",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OracleRowsAreSourceOfTruthAndRestIncludesFinalDay",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ErrorBytesMatchOriginal",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "OnlyFirstRecipientAndLegacyDocumentPrecedence",
+          "outcome": "Passed"
+        },
+        {
+          "name": "LegacyErrorContract",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "UnsupportedActionCannotInvokeApplication",
+          "outcome": "Passed"
+        },
+        {
+          "name": "EmptyPageIsRestSuccessAndSoapE040",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FortyGoldenCasesMatchBaselineAndOriginalHostExactly",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ErrorBytesMatchOriginal",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "SerializerMatchesLegacyIncludingEscapesStatusesDocumentsAndStoredTax",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidProviderIdentifier",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "StrictParserDivergencesAreDeliberate",
+          "outcome": "Passed"
+        },
+        {
+          "name": "PaginationBoundariesRetainOracleAmountsAndStates",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ExtraRowIsNeverDecoded",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ReadOnlyStatementUnderAutocommitDoesNotRetainTransaction",
+          "outcome": "Passed"
+        },
+        {
+          "name": "MalformedEnvelopeIsClientFaultAndInnerXmlIsBusinessError",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ErrorBytesMatchOriginal",
+          "outcome": "Passed"
+        },
+        {
+          "name": "CanonicalDocuments",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ValidationOrderAndNoInvoiceReadOnFailure",
+          "outcome": "Passed"
+        },
+        {
+          "name": "DepthIsBoundedBeforeInnerText",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "SerializerMatchesLegacyIncludingEscapesStatusesDocumentsAndStoredTax",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidProviderIdentifier",
+          "outcome": "Passed"
+        },
+        {
+          "name": "InvalidRestInputHasDocumentedProblemAndDoesNotReadOracle",
+          "outcome": "Passed"
+        },
+        {
+          "name": "MissingProviderHasRest404AndSoapE010",
+          "outcome": "Passed"
+        },
+        {
+          "name": "ApplicationRejectsInvalidTypedPeriod",
+          "outcome": "Passed"
+        }
+      ],
+      "transaction_observation": [
+        "autocommit=True; active=False; local_id=\nautocommit=False; active=True; local_id=[presente; identificador local omitido]"
+      ]
+    },
+    {
+      "file": "review-legacy.trx",
+      "sha256": "7b9aaf028e275d1f2e4f69821a4f14c3d3d15fe9bb4eab8c8464b8d3af4bfbf4",
+      "counters": {
+        "total": "17",
+        "executed": "16",
+        "passed": "16",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "review-facade.trx",
+      "sha256": "7ef5d94474cd3639f85e7be940d3287312cd01128c728b4a72d27c35b995667c",
+      "counters": {
+        "total": "24",
+        "executed": "24",
+        "passed": "24",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "source_sha256": {
+    "novo/Dockerfile": "20e87330c211927828f898f470b975d203080593004485a25048d99540e70f3b",
+    "novo/README.md": "54c13bddb8cddd4949ee7fcfa95bb0310d47acd2a593cdf877012b5bcafcb8ea",
+    "novo/src/NotaCarioca.Consulta/ConsultarNfse.cs": "eb741d4580065e3d749a541c674e4486052c8f0382ca74943ce5a6ea7f12cc7e",
+    "novo/src/NotaCarioca.Consulta/ConsultarNfse.wsdl": "7272d56180a2189ccfe3ec62f1e28b0ef51aa08829981660321a3c3c5d4aee88",
+    "novo/src/NotaCarioca.Consulta/DocumentoFiscal.cs": "658bf5f30667d58ff0f00dfd07bfa635ab61602df819a3d1963f78cb5e8b5dc6",
+    "novo/src/NotaCarioca.Consulta/Models.cs": "92014454b97c8e246b7832bd00cac0f6a4c5b3b8037ccc532c1d00bff4dec9f7",
+    "novo/src/NotaCarioca.Consulta/NotaCarioca.Consulta.csproj": "4f7b5a67ad152fef650cc7f5a00d39fbc5815fcb07e80fb2e1edff7fd4dda4b9",
+    "novo/src/NotaCarioca.Consulta/OracleConsulta.cs": "66df774405c7b985f7d2de3ecd8843d030190923b548e91b9a2fa8effbc87c1a",
+    "novo/src/NotaCarioca.Consulta/Program.cs": "4e50b6108846116b04754b2caf91ecb82c680d7053898960c9db31ed97a96734",
+    "novo/src/NotaCarioca.Consulta/RestApi.cs": "caa78cc6ec4de4d9449377266ad717a761585415929e9ba6ced8f0f500a45784",
+    "novo/src/NotaCarioca.Consulta/SoapAdapter.cs": "8b71e7264cd3609640b51b8c5983845d3ced475771db314e0f6d083e1784fde6",
+    "novo/src/NotaCarioca.Consulta/openapi.json": "95e286d2b3f96c48ae51ee7c37d4bb0373c12507cffb2065aed2dc78402dff12",
+    "novo/tests/NotaCarioca.Consulta.Testes/ApplicationTests.cs": "f130dfadb369e1bfee8824a25394af5399207903bd671fd321f7268a20aa6333",
+    "novo/tests/NotaCarioca.Consulta.Testes/HttpContractTests.cs": "b795a5fef5c4bfc03fc7f274967242f95787ea2dc34882f5fefc5369be5620cb",
+    "novo/tests/NotaCarioca.Consulta.Testes/HttpServer.cs": "20f935c6451bd2b51690c716c48685916295be7b0b1146ac6daab6135cce76b9",
+    "novo/tests/NotaCarioca.Consulta.Testes/LegacyCharacterizationTests.cs": "7d7674ae1b724b01122bf789e15c3869935a63d10a34205f39bbddc1d1a4224d",
+    "novo/tests/NotaCarioca.Consulta.Testes/NotaCarioca.Consulta.Testes.csproj": "3496a28fbd17987bfe272fd4349c203e41c674e4f05a4ff0a5ab9f5d946b9ec7",
+    "novo/tests/NotaCarioca.Consulta.Testes/OracleIntegrationTests.cs": "40450a5f4d27bc6804966c8351b940366ac31ccd14e92384fca589ece1d608b7",
+    "novo/tests/NotaCarioca.Consulta.Testes/ReviewRegressionTests.cs": "51757e342258462ea5d7f55465c73f177ed33d792d9d07dcd2782a323ad627aa",
+    "novo/tests/NotaCarioca.Consulta.Testes/SoapTests.cs": "cf6abe9be3a904254ae3f5bc6d5ccd49aabe3e3f0ec32b07fcdd11da620f3cb2",
+    "novo/tests/NotaCarioca.Consulta.Testes/TestResults/consulta-oracle.trx": "3492855548bd6f69ccb7677db1953e4697a6ccb2648524fa2bf2abca4d082da0",
+    "novo/tests/cases/consultar-nfse-review.json": "05e9d476ef18c49c325c5c7710ec5e567e683f0345d77d82d6f61589e2c2d413",
+    "novo/tests/cases/consultar-nfse-supplemental.json": "56dd68ad47cd35c0cd6f9ca0012ddf2a826ac4e9c75e41fc44ce48a93890c75b",
+    "novo/tests/cases/consultar-nfse.json": "b32296713ffaa51b437388d87c2e83bf1e3f549e17c9afe3f319f1780610f8bb"
+  },
+  "sanitization_note": "Caminhos TRX reduzidos aos nomes de arquivo; argumentos duplicados dos testes e ID local da transação omitidos. Contadores, resultados e hashes originais preservados. source_sha256 registra a revisão anterior à limpeza documental; o hash histórico de novo/README.md não descreve esta edição."
+}

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://notacarioca.rio.gov.br/" xmlns:tns="http://notacarioca.rio.gov.br/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://notacarioca.rio.gov.br/">
+      <s:element name="ConsultarNfseRequest"><s:complexType><s:sequence><s:element minOccurs="0" maxOccurs="1" name="inputXML" type="s:string" /></s:sequence></s:complexType></s:element>
+      <s:element name="ConsultarNfseResponse"><s:complexType><s:sequence><s:element minOccurs="0" maxOccurs="1" name="outputXML" type="s:string" /></s:sequence></s:complexType></s:element>
+      </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ConsultarNfseSoapIn"><wsdl:part name="parameters" element="tns:ConsultarNfseRequest" /></wsdl:message>
+  <wsdl:message name="ConsultarNfseSoapOut"><wsdl:part name="parameters" element="tns:ConsultarNfseResponse" /></wsdl:message>
+  <wsdl:portType name="NfseWSSoap">
+    <wsdl:operation name="ConsultarNfse"><wsdl:input message="tns:ConsultarNfseSoapIn" /><wsdl:output message="tns:ConsultarNfseSoapOut" /></wsdl:operation>
+    </wsdl:portType>
+  <wsdl:binding name="NfseWSSoap" type="tns:NfseWSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ConsultarNfse"><soap:operation soapAction="http://notacarioca.rio.gov.br/ConsultarNfse" style="document" /><wsdl:input><soap:body use="literal" /></wsdl:input><wsdl:output><soap:body use="literal" /></wsdl:output></wsdl:operation>
+    </wsdl:binding>
+  <wsdl:service name="NfseWS">
+    <wsdl:port name="NfseWSSoap" binding="tns:NfseWSSoap"><soap:address location="http://consulta:8080/NfseWS.asmx" /></wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

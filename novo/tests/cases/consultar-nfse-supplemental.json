@@ -1,0 +1,14 @@
+[
+  {
+    "name": "overflow-wrap-to-initial-rows",
+    "replace": [["<Pagina>1</Pagina>", "<Pagina>85899346</Pagina>"]],
+    "expected": {"status": 200, "code": null, "invoices": 3, "next": "false"}
+  },
+  {
+    "name": "internal-dtd-security-divergence",
+    "input": "<!DOCTYPE ConsultarNfseEnvio [<!ENTITY im '10000001'>]><ConsultarNfseEnvio><Prestador><InscricaoMunicipal>&im;</InscricaoMunicipal></Prestador><PeriodoEmissao><DataInicial>2026-10-01</DataInicial><DataFinal>2026-10-31</DataFinal></PeriodoEmissao></ConsultarNfseEnvio>",
+    "expected": {"status": 200, "code": null, "invoices": 3},
+    "modern_expected": {"status": 200, "code": "E001", "invoices": 0},
+    "divergence": "deliberate-security-dtd-rejected"
+  }
+]

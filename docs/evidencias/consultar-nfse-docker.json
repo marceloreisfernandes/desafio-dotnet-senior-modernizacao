@@ -1,0 +1,1042 @@
+[
+  {
+    "case": "representative",
+    "request_sha256": "cb558b552f3b45def5da25b93599a7ca02d55520191f519fdb2cf9da43d0f376",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "representative-filter",
+    "request_sha256": "48e2fa2c0c2a3ebd2d1da057636737a8380297f434a5e2a76ec6f46d53692d10",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a1b0ad0911b7ed7fe3590bc8dbc7d571b8c48bf161fe4f141b3e71356aca1097",
+      "bytes": 1711,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a1b0ad0911b7ed7fe3590bc8dbc7d571b8c48bf161fe4f141b3e71356aca1097",
+      "bytes": 1711,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "malformed-inner",
+    "request_sha256": "1e84ea37c779db44dd33f992c3f563da8947a93d726d5bfb2edead777950ee72",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "wrong-root",
+    "request_sha256": "7ff71f222e8e8bff816844a6154f27fedc1af52eee1b709b00586473de1bb823",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "missing-provider",
+    "request_sha256": "1940859121476b4d3afbc05927bf7036f4c4a651dbf6b2690cf787289157bc28",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "unknown-provider",
+    "request_sha256": "b3f52035efc31fa0217d7a4d86d84eb0d07342d52fe7ba5d95111de0d780bb87",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "inactive-provider",
+    "request_sha256": "2fa82d6fff1a603d954204675705544f6799ac97dbce0b03c36027c825bbed7f",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "provider-before-period",
+    "request_sha256": "4ca6e5e8a3ac200f30804515a38769492cd86528fb7fd8c17984359e9eebc527",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "invalid-recipient",
+    "request_sha256": "e224a6c930f4040a79e1ad4708dcb348d9c6affb7e8fc6555840fbb388fa6d29",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "085c97147a8618e98c8b991f059881f3515bd7621890eded7e2bd787b85eef1b",
+      "bytes": 568,
+      "invoices": 0,
+      "code": "E020",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "085c97147a8618e98c8b991f059881f3515bd7621890eded7e2bd787b85eef1b",
+      "bytes": 568,
+      "invoices": 0,
+      "code": "E020",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "recipient-before-period",
+    "request_sha256": "05b282d110d783bda139c7c49135d6ccee3bda8c9d2f884fc86cd3649c97ea08",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "085c97147a8618e98c8b991f059881f3515bd7621890eded7e2bd787b85eef1b",
+      "bytes": 568,
+      "invoices": 0,
+      "code": "E020",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "085c97147a8618e98c8b991f059881f3515bd7621890eded7e2bd787b85eef1b",
+      "bytes": 568,
+      "invoices": 0,
+      "code": "E020",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "invalid-start",
+    "request_sha256": "7d11bd0f5fd8e820ca6c3c0cb0957db1e744fc176ea5ec8f6ee53916d9cd4feb",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "invalid-end",
+    "request_sha256": "082775425a146216e993ad1bb3c370426ae842d9b34963a2a9b6602e7731bd4a",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "inverted-period",
+    "request_sha256": "a8247572d3330546dd350e4d04d31f21ed672f38729c5f409175b8f4dbc1d9a6",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "period-32-days",
+    "request_sha256": "f4959fdc50f2632a8ef6ee9c40fafe7e8bf9c597df90eb3b5124aff80e163bc2",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9e114af51b3f8696e15fbbe296c4fec436c74a748c7fd3ae88c9baed61fc7804",
+      "bytes": 629,
+      "invoices": 0,
+      "code": "E030",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "period-31-days",
+    "request_sha256": "61aa63f22145d9a1b777cb556732df77d9c330d34b88ab0fbecf458da8bbedcc",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "same-day",
+    "request_sha256": "829542f506f9330bd1ef8eaa0cdca51709abad0b802fbbc019eb38d381933964",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "final-day-exclusive",
+    "request_sha256": "003ad0656a8a8e3262000412efd73771b572a8397375732e052c235ba62ea1e2",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "f61e15a589a83a4005ff031621a19c5e4bbaed8c16792c116aa4ada18c2755c3",
+      "bytes": 1720,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "f61e15a589a83a4005ff031621a19c5e4bbaed8c16792c116aa4ada18c2755c3",
+      "bytes": 1720,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "times-truncated",
+    "request_sha256": "6ded18d3d7c0030a0a4b1c0db46973a834a974fc43a2922b89179c3f6ec94cb3",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "f61e15a589a83a4005ff031621a19c5e4bbaed8c16792c116aa4ada18c2755c3",
+      "bytes": 1720,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "f61e15a589a83a4005ff031621a19c5e4bbaed8c16792c116aa4ada18c2755c3",
+      "bytes": 1720,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "invariant-us-dates",
+    "request_sha256": "18dbee1a18eff2d664db8dcc7e7e4eab849670683b6e80c0cf6a21bbcb15bfa3",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "missing-page",
+    "request_sha256": "b156649f90d7ed81e9c04f17faebfef57862a18fc02952bf36406bc5cae3f2e0",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "zero-page",
+    "request_sha256": "40830a6c00e01f076660174f268d78113cb372912c9e64923c08a68958cd3315",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "negative-page",
+    "request_sha256": "2dfbe07dcabc1183ea76184d68ddb218485405fb6a6d0aeaa2f519e9de255803",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "text-page",
+    "request_sha256": "a0caa1829c60cfae988c655226a78e1e0052d2a9310fe5a44f0d461a2fca8f53",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "out-of-int-page",
+    "request_sha256": "2d59b45babc15b2d3b8142ce1ff68191ce20d08cfcef2073688e1da1530b8e37",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "second-empty-page",
+    "request_sha256": "6290d8893031bf18341e70a67641c57bcddaffc938c2f0e630f8f15aeb91cf8b",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "overflow-page",
+    "request_sha256": "6f2250e5becd8c04cfa070ae35d5727f6959d4e2617d2f8a9b3bfbfc2164202b",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "ignored-provider-document",
+    "request_sha256": "495f31ac8c2d17ebdf2576459422e318e612e047b7a23eb0483fc6c3b5fb4220",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "trimmed-im",
+    "request_sha256": "9028ce9c6adcd060a1eb851f43b91c0127708733617e01baf199be59da37645a",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "926d073e52cc26d9b3341075bf275567c40b9121468a94fe2b444357aef7f735",
+      "bytes": 4361,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "cancelled-included",
+    "request_sha256": "0d03238abbb29c63f5a46894f0b45595ed27e0333d53614d57be2dfd067538f9",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9036f405058294c92387d9486b54c8cb48d6a96e27e78c161ecfbf82eec55885",
+      "bytes": 7120,
+      "invoices": 5,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "9036f405058294c92387d9486b54c8cb48d6a96e27e78c161ecfbf82eec55885",
+      "bytes": 7120,
+      "invoices": 5,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "replaced-included",
+    "request_sha256": "0be19d44bea82ee67a46ffbfdb1f1281f8635b1de6057881b62ef5d305fdfdd5",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "e65a5440aad6392ab13cfca24bd57eadcf5ca1930a0d3ce3c856feb76f268ca4",
+      "bytes": 8551,
+      "invoices": 6,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "e65a5440aad6392ab13cfca24bd57eadcf5ca1930a0d3ce3c856feb76f268ca4",
+      "bytes": 8551,
+      "invoices": 6,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "stored-iss",
+    "request_sha256": "8fc02827f253f449f7f18cf5ee26c16111cf62545bbeff4a003fd6d29e815cdb",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "8b958a5cd5fedeb48c2c5ce3409c569ecfd4c512850b6664f417d9d355ba38b8",
+      "bytes": 14944,
+      "invoices": 11,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "8b958a5cd5fedeb48c2c5ce3409c569ecfd4c512850b6664f417d9d355ba38b8",
+      "bytes": 14944,
+      "invoices": 11,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "mei-zero-rate",
+    "request_sha256": "85c6dbd3cd5fbf325d5f71fb7cb4a063f0e93f28a24b5ec85053bff7b5723bcd",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "fe553eb00a05e008e64c8fdfb06c493ae67b5d42e0a3d279bdec25e350214a9c",
+      "bytes": 4308,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "fe553eb00a05e008e64c8fdfb06c493ae67b5d42e0a3d279bdec25e350214a9c",
+      "bytes": 4308,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "leading-zero-provider",
+    "request_sha256": "d398e20edf0dcf7e6c36e9769b074cfa442fb0ccc9878f2710740f1ce7ae302c",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "41fd2c4294d8034b70bbfaac4b45b8af3ddd7c069100fa62ded42a7b6c49758d",
+      "bytes": 4343,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "41fd2c4294d8034b70bbfaac4b45b8af3ddd7c069100fa62ded42a7b6c49758d",
+      "bytes": 4343,
+      "invoices": 3,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "empty-range",
+    "request_sha256": "7484809ef580cd2b38c6ac7c84cd11cf4b498ff64677a6c3bc9c74b5fbb7cc98",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "c4c66c8bac0f0628dcd3ac2b2cefadd6b83740299a70128faa48281af41ab353",
+      "bytes": 576,
+      "invoices": 0,
+      "code": "E040",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "default-namespace-inner",
+    "request_sha256": "63a7eb085ff2ecb1b01c4379c30575aa649b93068379426207bf6f85d6854d6d",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "05254ca9d9a7a8be4b9bcee3ce162c1e0510f71fb907014be71438a8ee26952e",
+      "bytes": 599,
+      "invoices": 0,
+      "code": "E010",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "prefixed-root",
+    "request_sha256": "fbb40807b7f3243efeb47df03166fc9c671a476e332a0f4458c3b66d3f8f1361",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "missing-input",
+    "request_sha256": "a4e7e42e4230b2cbe89060f1d84856b17cee75e0f71ecfabc13da3eee3965bb8",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a3b4c394091ee55ab2742860f48afd4220e13e0f1fea3c1b5bf2dd826f8c381d",
+      "bytes": 584,
+      "invoices": 0,
+      "code": "E001",
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "malformed-envelope",
+    "request_sha256": "b76cd21f24358c3778f41dd68d27a0a9307241769074000c90fa8686ad5616d6",
+    "legacy": {
+      "status": 500,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "00615b1ff2561485b696fe201140aac4e4946093972ec6b69b020b2e7f9c664c",
+      "bytes": 256,
+      "invoices": 0,
+      "code": null,
+      "next": null
+    },
+    "characterized": true,
+    "modern": {
+      "status": 500,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "00615b1ff2561485b696fe201140aac4e4946093972ec6b69b020b2e7f9c664c",
+      "bytes": 256,
+      "invoices": 0,
+      "code": null,
+      "next": null
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "formatted-filter",
+    "request_sha256": "fe764c6021bb04b05fb9a776ada2a3e6f8ded75034c8be4d6927019df0f78a37",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a1b0ad0911b7ed7fe3590bc8dbc7d571b8c48bf161fe4f141b3e71356aca1097",
+      "bytes": 1711,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a1b0ad0911b7ed7fe3590bc8dbc7d571b8c48bf161fe4f141b3e71356aca1097",
+      "bytes": 1711,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  },
+  {
+    "case": "letters-in-filter",
+    "request_sha256": "b6ce9812516181d67d80ae71f7d7c9cdf68aeb719c5fad159384d73552afd9a7",
+    "legacy": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a1b0ad0911b7ed7fe3590bc8dbc7d571b8c48bf161fe4f141b3e71356aca1097",
+      "bytes": 1711,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "characterized": true,
+    "modern": {
+      "status": 200,
+      "content_type": "text/xml; charset=utf-8",
+      "sha256": "a1b0ad0911b7ed7fe3590bc8dbc7d571b8c48bf161fe4f141b3e71356aca1097",
+      "bytes": 1711,
+      "invoices": 1,
+      "code": null,
+      "next": "false"
+    },
+    "modern_expected": true,
+    "exact_match": true,
+    "classification": "equal"
+  }
+]

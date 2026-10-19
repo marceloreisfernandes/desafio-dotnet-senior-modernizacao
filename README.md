@@ -12,8 +12,12 @@ Este repositório contém uma **réplica didática** do monolito, com C# no esti
 
 O primeiro incremento implementado é uma fachada SOAP que encaminha todas as
 operações ao legado. Instruções de execução, verificações somente de leitura e
-rollback estão em [fachada/README.md](fachada/README.md). A extração de serviços
-descrita no restante do desafio ainda não faz parte deste incremento.
+rollback estão em [fachada/README.md](fachada/README.md).
+
+A primeira operação independente, `ConsultarNfse`, está disponível em um serviço
+interno .NET 8 com REST v1 e adaptador SOAP, sem alterar o roteamento público.
+Execução e contratos: [novo/README.md](novo/README.md); decisões e limites de
+paridade: [ADR 0002](docs/adr/0002-consultar-nfse-independente.md).
 
 ```
 legado/

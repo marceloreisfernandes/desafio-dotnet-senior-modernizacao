@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="NotaCarioca.Consulta.Testes" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.301" />
+    <Content Update="openapi.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="ConsultarNfse.wsdl" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

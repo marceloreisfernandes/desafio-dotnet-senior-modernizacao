@@ -1,0 +1,300 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Nota Carioca — Consulta independente",
+    "version": "1.0.0",
+    "description": "Somente leitura e acesso interno. Período inclusivo; até 31 dias. Não autentica nem autoriza contribuintes; não habilitar tráfego público. Sem snapshot entre páginas. Parâmetros desconhecidos/repetidos são rejeitados."
+  },
+  "paths": {
+    "/api/v1/prestadores/{inscricaoMunicipal}/nfse": {
+      "get": {
+        "operationId": "ConsultarNfseV1",
+        "parameters": [
+          {
+            "name": "inscricaoMunicipal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{8}$"
+            }
+          },
+          {
+            "name": "dataInicial",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Primeiro dia incluído (yyyy-MM-dd)."
+          },
+          {
+            "name": "dataFinal",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Último dia incluído; máximo 31 dias inclusivos. Deve ser anterior a 9999-12-31."
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000,
+              "default": 1
+            }
+          },
+          {
+            "name": "documentoTomador",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{11}|[0-9]{14})$"
+            },
+            "description": "CPF/CNPJ com dígitos verificadores válidos, sem pontuação. Zeros preservados."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página de até 50 notas, ordenadas por DT_EMISSAO e ID. Página vazia é sucesso. Sem total global.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pagina"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro inválido, desconhecido ou repetido; período inválido; CPF/CNPJ inválido; página fora de 1..1000000.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Prestador inexistente ou inativo.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno sem detalhes de banco ou dados pessoais.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problema"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Oracle indisponível ou timeout da dependência.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pessoa": {
+        "type": "object",
+        "required": [
+          "documento",
+          "razaoSocial"
+        ],
+        "properties": {
+          "documento": {
+            "type": "string",
+            "description": "Texto original do Oracle, com zeros à esquerda."
+          },
+          "razaoSocial": {
+            "type": "string"
+          },
+          "inscricaoMunicipal": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Nota": {
+        "type": "object",
+        "required": [
+          "numero",
+          "codigoVerificacao",
+          "dataEmissao",
+          "competencia",
+          "valorServicos",
+          "valorDeducoes",
+          "baseCalculo",
+          "aliquota",
+          "valorIss",
+          "issRetido",
+          "itemServico",
+          "discriminacao",
+          "prestador",
+          "tomador",
+          "situacao",
+          "dataCancelamento",
+          "numeroSubstituidora"
+        ],
+        "properties": {
+          "numero": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigoVerificacao": {
+            "type": "string"
+          },
+          "dataEmissao": {
+            "type": "string",
+            "description": "Data/hora local de Oracle DATE, sem offset.",
+            "example": "2026-10-02T11:19:00"
+          },
+          "competencia": {
+            "type": "string",
+            "format": "date"
+          },
+          "valorServicos": {
+            "type": "number",
+            "description": "Valor decimal armazenado no Oracle; sem recálculo."
+          },
+          "valorDeducoes": {
+            "type": "number",
+            "description": "Valor decimal armazenado no Oracle; sem recálculo."
+          },
+          "baseCalculo": {
+            "type": "number",
+            "description": "Valor decimal armazenado no Oracle; sem recálculo."
+          },
+          "aliquota": {
+            "type": "number",
+            "description": "Valor decimal armazenado no Oracle; sem recálculo."
+          },
+          "valorIss": {
+            "type": "number",
+            "description": "Valor decimal armazenado no Oracle; sem recálculo."
+          },
+          "issRetido": {
+            "type": "boolean"
+          },
+          "itemServico": {
+            "type": "string"
+          },
+          "discriminacao": {
+            "type": "string"
+          },
+          "prestador": {
+            "$ref": "#/components/schemas/Pessoa"
+          },
+          "tomador": {
+            "$ref": "#/components/schemas/Pessoa"
+          },
+          "situacao": {
+            "type": "string",
+            "enum": [
+              "Desconhecida",
+              "Normal",
+              "Cancelada",
+              "Substituida"
+            ]
+          },
+          "dataCancelamento": {
+            "type": "string",
+            "nullable": true,
+            "description": "Data/hora local sem offset, ou null."
+          },
+          "numeroSubstituidora": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        }
+      },
+      "Pagina": {
+        "type": "object",
+        "required": [
+          "itens",
+          "pagina",
+          "tamanhoPagina",
+          "proximaPagina"
+        ],
+        "properties": {
+          "itens": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/Nota"
+            }
+          },
+          "pagina": {
+            "type": "integer"
+          },
+          "tamanhoPagina": {
+            "type": "integer",
+            "enum": [
+              50
+            ]
+          },
+          "proximaPagina": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Problema": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "codigo"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "codigo": {
+            "type": "string",
+            "enum": [
+              "parametros-invalidos",
+              "inscricao-invalida",
+              "periodo-invalido",
+              "pagina-invalida",
+              "documento-invalido",
+              "prestador-inexistente",
+              "consulta-invalida",
+              "erro-interno",
+              "oracle-indisponivel",
+              "requisicao-grande"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

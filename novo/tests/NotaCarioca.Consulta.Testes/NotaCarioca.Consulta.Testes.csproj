@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/NotaCarioca.Consulta/NotaCarioca.Consulta.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.4" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.4" />
+    <!-- Legacy references are test oracles only, never production dependencies. -->
+    <ProjectReference Include="../../../legado/src/NotaCarioca.Servicos/NotaCarioca.Servicos.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../../tools/exemplos/04*.xml" Link="examples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../../docs/evidencias/consultar-nfse-baseline.json" Link="baseline.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../cases/consultar-nfse-review.json" Link="review-cases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../cases/consultar-nfse.json" Link="cases.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

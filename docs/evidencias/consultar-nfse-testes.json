@@ -1,0 +1,83 @@
+[
+  {
+    "suite": "consulta",
+    "counters": {
+      "total": "76",
+      "executed": "76",
+      "passed": "76",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "times": {
+      "creation": "2026-10-19T11:50:46.3460782-03:00",
+      "queuing": "2026-10-19T11:50:46.3460784-03:00",
+      "start": "2026-10-19T11:50:31.0278013-03:00",
+      "finish": "2026-10-19T11:51:25.3314804-03:00"
+    }
+  },
+  {
+    "suite": "fachada",
+    "counters": {
+      "total": "24",
+      "executed": "24",
+      "passed": "24",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "times": {
+      "creation": "2026-10-19T11:41:43.6773091-03:00",
+      "queuing": "2026-10-19T11:41:43.6773092-03:00",
+      "start": "2026-10-19T11:41:39.7834012-03:00",
+      "finish": "2026-10-19T11:41:48.4796098-03:00"
+    }
+  },
+  {
+    "suite": "legado",
+    "counters": {
+      "total": "17",
+      "executed": "16",
+      "passed": "16",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "times": {
+      "creation": "2026-10-19T11:41:22.8680965-03:00",
+      "queuing": "2026-10-19T11:41:22.8680967-03:00",
+      "start": "2026-10-19T11:41:10.8039029-03:00",
+      "finish": "2026-10-19T11:41:23.5117958-03:00"
+    }
+  }
+]

@@ -48,5 +48,20 @@ services:
       webservices:
         condition: service_started
 
+  consulta:
+    build:
+      context: .
+      dockerfile: novo/Dockerfile
+    environment:
+      TZ: America/Sao_Paulo
+      ASPNETCORE_URLS: http://+:8080
+      NFSE_CONNECTION_STRING: "User Id=NFSE_OWNER;Password=nfse_dev_123;Data Source=oracle:1521/FREEPDB1;Min Pool Size=0;Max Pool Size=10;Connection Timeout=10"
+    mem_limit: 512m
+    expose:
+      - "8080"
+    depends_on:
+      oracle:
+        condition: service_healthy
+
 volumes:
   oracle-data:
