@@ -80,20 +80,20 @@ A IM declarada é metadado de seleção, nunca autenticação/autorização.
 
 Decisão: arquivo JSON local obrigatório para habilitar migração, com kill switch,
 regra por operação, allowlist de IM e percentual determinístico por SHA-256 da
-operação/IM. Sem configuração válida, LEGACY. Ler snapshot limitado a 16 KiB a
+operação/IM. Sem configuração válida, `legado`. Ler snapshot limitado a 16 KiB a
 cada decisão e novamente após upload/inspeção; não manter último estado permissivo.
 Operadores substituem o arquivo atomicamente no diretório montado somente para
 leitura no processo. Não há endpoint de gestão, banco/Redis ou serviço de flags.
 A propagação é na próxima leitura, sem polling/restart/deploy, sujeita à latência
 do filesystem local; não coordena múltiplas réplicas.
 
-LEGACY usa o proxy original. NEW usa o mesmo transporte, com origem moderna fixa
+`legado` usa o proxy original. `novo` usa o mesmo transporte, com origem moderna fixa
 e uma tentativa, sem replay para legado em falhas ou resultados ambíguos. O kill
 switch retorna chamadas seguintes ao legado; chamadas já despachadas terminam.
 O WSDL e health/ready continuam no legado. Não disponibilizar o WSDL parcial novo
 como contrato público.
 
-SHADOW transmite integralmente a resposta legada e, após sua cópia, agenda somente
+`sombra` transmite integralmente a resposta legada e, após sua cópia, agenda somente
 a leitura moderna. Reserva não bloqueante inclui o tempo no legado, canal e número
 de consumidores são limitados (padrão 2), deadline próprio 2 s, buffers apenas em
 memória (requisição até 1 MiB, respostas até 2 MiB). Saturação descarta observações;

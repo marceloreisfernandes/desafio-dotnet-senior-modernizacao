@@ -79,8 +79,11 @@ Integração real, sem DML/DDL nem chamada fiscal de escrita:
 ```bash
 export NFSE_TEST_CONNECTION_STRING="$NFSE_CONNECTION_STRING"
 export NFSE_LEGACY_BASE_URL=http://127.0.0.1:8080
-dotnet test novo/tests/NotaCarioca.Consulta.Testes -c Release
+dotnet test novo/tests/NotaCarioca.Consulta.Testes -c Release --filter 'TestCategory=Oracle'
 ```
+
+O GitHub Actions executa somente os testes fora da categoria `Oracle`; não
+provisiona Oracle. Resultados de integração documentados são locais.
 
 Os 7 testes `Oracle` exigem essas variáveis. Sem configuração ficam ignorados
 com motivo explícito; isso não conta como integração aprovada. A suíte compara

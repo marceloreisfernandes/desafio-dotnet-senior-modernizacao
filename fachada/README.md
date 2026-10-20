@@ -1,18 +1,20 @@
 # Fachada SOAP — Strangler Fig controlado em runtime
 
 Aplicação isolada em .NET 8, preservando o WSDL integral do legado e os bytes SOAP.
-Somente `ConsultarNfse` pode usar `LEGACY`, `SHADOW` ou `NEW`. Cancelamento,
+Somente `ConsultarNfse` pode usar `legado`, `sombra` ou `novo`. Cancelamento,
 recepção/emissão/substituição de RPS e todas as outras ações ficam exclusivamente
 no legado, com uma tentativa por requisição. Decisão: [ADR 0001](../docs/adr/0001-fachada-soap-legado.md).
 
 ## Configuração e atualização ao vivo
 
 O Compose monta **o diretório** `fachada/config` como `/app/routing:ro`; o arquivo
-versionado começa com kill switch ligado e modo `LEGACY`. O processo lê no máximo
+versionado começa com kill switch ligado e modo `legado`. O processo lê no máximo
 16 KiB do arquivo a cada decisão, sem cache permissivo, watcher ou API administrativa.
+Os valores canônicos são `legado`, `sombra` e `novo` (minúsculos). Os aliases
+`LEGACY`, `SHADOW` e `NEW` continuam aceitos; outros valores falham para legado.
 Ausência, falta de acesso, JSON inválido, propriedades duplicadas/desconhecidas,
 operação não suportada, modo inválido, percentual fora de 0..100 ou allowlist
-inválida resultam em `LEGACY`. Os campos abaixo são obrigatórios; somente a chave
+inválida resultam em `legado`. Os campos abaixo são obrigatórios; somente a chave
 `ConsultarNfse` é configurável. `Operations: {}` também resulta em legado.
 
 ```json
@@ -20,7 +22,7 @@ inválida resultam em `LEGACY`. Os campos abaixo são obrigatórios; somente a c
   "KillSwitch": false,
   "Operations": {
     "ConsultarNfse": {
-      "Mode": "SHADOW",
+      "Mode": "sombra",
       "Percentage": 100,
       "Providers": ["10000001"]
     }
@@ -72,7 +74,7 @@ Isso restringe a migração; não rejeita nem reserializa essas chamadas.
 
 ## Sombra, falhas e segurança
 
-`SHADOW` entrega status, headers e bytes do legado. Captura em memória até 2 MiB
+`sombra` entrega status, headers e bytes do legado. Captura em memória até 2 MiB
 de resposta e só enfileira a consulta nova após a conclusão da cópia legada.
 Há duas vagas/consumidores por padrão; a reserva inclui o tempo no legado.
 Sem vaga, a sombra é descartada imediatamente. A fila também é limitada pelo
@@ -99,7 +101,7 @@ dados transitam em memória somente enquanto a requisição/observação existe.
 Não habilitar logging de corpos/headers ou dumps de processo com dados fiscais.
 O logging preexistente do legado permanece uma limitação externa.
 
-`NEW` encaminha uma vez ao serviço moderno e entrega sua resposta SOAP. Falha de
+`novo` encaminha uma vez ao serviço moderno e entrega sua resposta SOAP. Falha de
 transporte = 502; timeout = 504; resposta parcial aborta a conexão. Não existe
 fallback para legado após resultado ambíguo. Acione o kill switch para as chamadas
 seguintes. Health/readiness continuam verificando legado, não certificam o moderno.
@@ -116,7 +118,7 @@ Configuração de transporte/capacidade é de startup, separada das flags ao viv
 | `Legacy__PublicServiceUrl` | `http://localhost:8080/NfseWS.asmx` | Endereço WSDL público |
 | `Legacy__TimeoutSeconds` | `660` | Limite total legado, 1..660 s; Compose aceita `LEGACY_TIMEOUT_SECONDS` |
 | `Modern__BaseUrl` | `http://consulta:8080` | Origem moderna fixa |
-| `Modern__TimeoutSeconds` | `30` | Limite total NEW, 1..300 s |
+| `Modern__TimeoutSeconds` | `30` | Limite total novo, 1..300 s |
 | `Modern__ShadowTimeoutMilliseconds` | `2000` | Prazo sombra, 50..10000 ms |
 | `Modern__ShadowConcurrency` | `2` | Vagas/consumidores por processo, 1..8 |
 
@@ -144,11 +146,14 @@ NFSE_MODERN_BASE_URL=http://IP_CONSULTA:8080 \
 dotnet test fachada/tests/NotaCarioca.Fachada.Testes -c Release --filter 'TestCategory=Oracle' --logger 'console;verbosity=normal'
 ```
 
+O GitHub Actions exclui a categoria `Oracle` nas duas suítes e não provisiona
+Oracle. Estas integrações são locais e exigem os serviços já disponíveis.
+
 Esse teste usa o exemplo SOAP `04`, o caso documentado de caractere inválido,
-paridade LEGACY/NEW/SHADOW e kill switch, sem escritas fiscais. Sem variáveis ele
+paridade legado/novo/sombra e kill switch, sem escritas fiscais. Sem variáveis ele
 fica explicitamente ignorado. Os outros testes usam upstreams falsos e demonstram
 allowlist, 0/50/100, alterações ao vivo, JSON inválido, escritas no legado, sombra
-lenta/falha/saturada e ausência de fallback em NEW. A suíte anterior continua
+lenta/falha/saturada e ausência de fallback em novo. A suíte anterior continua
 verificando headers, WSDL integral, bytes opacos, health e falhas de streaming.
 Não executar o runner geral `tools/exemplos/executar.sh`, que inclui escritas.
 
@@ -200,8 +205,7 @@ Regressões atuais, Release, SDK 8.0.131, sem restore: fachada **47/47** sem Ora
 (incluindo cancelamento GET/POST), consulta **86/86** sem Oracle, legado net8.0
 **16 aprovados e 1 skip** preexistente; verificador Python **2/2**.
 As consultas reais acima complementam os testes locais; não representam execução
-da suíte Oracle completa nesta rodada. Os scripts e resultados detalhados desta
-rodada ficaram em `/tmp/nfse-compose-validation*` e `/tmp/nfse-image-controlled*`.
+da suíte Oracle completa nesta rodada.
 
 ## Reversibilidade e limites de produção
 
@@ -231,7 +235,7 @@ clientes, gateways e proxies precisam ter seus próprios orçamentos conciliados
 Não foram executadas escritas fiscais lentas nem se garante compatibilidade temporal
 irrestrita. Nunca repetir emissão,
 cancelamento ou lote automaticamente; reconciliar o resultado por consulta e
-procedimento fiscal existente. NEW tem limite próprio de 30 s; diferenças estritas
+procedimento fiscal existente. `novo` tem limite próprio de 30 s; diferenças estritas
 de XML e limites do serviço moderno permanecem as da ADR 0002. Leituras em momentos
 diferentes podem divergir sob alterações concorrentes; a comparação não fornece
 snapshot Oracle comum nem prova de paridade para toda a população.

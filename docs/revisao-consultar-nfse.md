@@ -103,8 +103,8 @@ não foi atualizado; sua imagem antiga não certifica as correções.
 ```bash
 # Com NFSE_CONNECTION_STRING definido e TZ=America/Sao_Paulo:
 DOTNET_PROCESSOR_COUNT=2 dotnet novo/src/NotaCarioca.Consulta/bin/Release/net8.0/NotaCarioca.Consulta.dll --urls http://127.0.0.1:18081
-python3 -B tools/verificar-consultar-nfse.py --legacy http://127.0.0.1:8080 --modern http://127.0.0.1:18081 --report docs/evidencias/consultar-nfse-review-corpus-original.json
-python3 -B tools/verificar-consultar-nfse.py --legacy http://127.0.0.1:8080 --modern http://127.0.0.1:18081 --cases novo/tests/cases/consultar-nfse-supplemental.json --report docs/evidencias/consultar-nfse-review-supplemental.json
+python3 -B tools/verificar-consultar-nfse.py --legacy http://127.0.0.1:8080 --modern http://127.0.0.1:18081 --report docs/evidencias/consultar-nfse-docker.json
+python3 -B tools/verificar-consultar-nfse.py --legacy http://127.0.0.1:8080 --modern http://127.0.0.1:18081 --cases novo/tests/cases/consultar-nfse-supplemental.json --report docs/evidencias/consultar-nfse-supplemental.json
 python3 -B tools/verificar-consultar-nfse.py --legacy http://127.0.0.1:8080 --modern http://127.0.0.1:18081 --cases novo/tests/cases/consultar-nfse-review.json --report docs/evidencias/consultar-nfse-review-regressions.json
 ```
 
@@ -182,3 +182,12 @@ baseline. Os 23 hashes não documentais da revisão permanecem idênticos.
 tools/exemplos e Dockerfile retornaram exit 0. Como a limpeza não alterou
 conteúdo executável, não foi necessária nova execução das suítes nem acesso
 Oracle/Docker. Os resultados de integração acima pertencem à revisão anterior.
+
+As capturas da revisão do corpus original e dos casos suplementares eram byte a
+byte idênticas, respectivamente, a `consultar-nfse-docker.json` (SHA-256
+`15b28d59b7ba64d3130afac721a37b41336ff64a2b19602dc8fc34acbffac1e2`) e
+`consultar-nfse-supplemental.json` (SHA-256
+`de6c06ff2998f2666a52816cbf4b27408613a01e6abb37de047d71e313270326`).
+As cópias redundantes `consultar-nfse-review-corpus-original.json` e
+`consultar-nfse-review-supplemental.json` foram removidas; os comandos acima
+apontam para as capturas retidas. Os resultados históricos permanecem preservados.

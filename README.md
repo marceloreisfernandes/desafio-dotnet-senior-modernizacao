@@ -10,15 +10,6 @@ Este repositório contém uma **réplica didática** do monolito, com C# no esti
 
 ## O legado
 
-O primeiro incremento implementado é uma fachada SOAP que encaminha todas as
-operações ao legado. Instruções de execução, verificações somente de leitura e
-rollback estão em [fachada/README.md](fachada/README.md).
-
-A primeira operação independente, `ConsultarNfse`, está disponível em um serviço
-interno .NET 8 com REST v1 e adaptador SOAP, sem alterar o roteamento público.
-Execução e contratos: [novo/README.md](novo/README.md); decisões e limites de
-paridade: [ADR 0002](docs/adr/0002-consultar-nfse-independente.md).
-
 ```
 legado/
   src/NotaCarioca.Dominio/      VB.NET — cálculo de ISS, validação de CPF/CNPJ, competência
@@ -174,3 +165,24 @@ Vamos discutir suas decisões e pedir que você altere partes da entrega ao vivo
 ---
 
 Dúvidas: **selecao.pcrj@gmail.com**
+
+## Implementação atual
+
+A fachada SOAP mantém o WSDL público integral e permite rotear somente
+`ConsultarNfse` nos modos `legado`, `sombra` e `novo`, com padrão seguro no legado.
+Configuração, operação, verificação e rollback: [fachada/README.md](fachada/README.md).
+
+A consulta independente em .NET 8 oferece REST v1 e adaptador SOAP interno.
+Execução e contratos: [novo/README.md](novo/README.md).
+Decisões: [ADR 0001 — fachada](docs/adr/0001-fachada-soap-legado.md) e
+[ADR 0002 — consulta](docs/adr/0002-consultar-nfse-independente.md).
+Evidências locais e limites: [verificação da fachada](docs/verificacao-fachada.md),
+[verificação da consulta](docs/verificacao-consultar-nfse.md) e
+[revisão da consulta](docs/revisao-consultar-nfse.md).
+
+O workflow [ci.yml](.github/workflows/ci.yml) compila o legado em net48/net8.0
+e executa seus testes net8.0, além dos testes da fachada e da consulta sem a
+categoria `Oracle`. Não provisiona Oracle nem executa essas integrações.
+Os comandos para integração local e seus pré-requisitos estão nos READMEs
+da fachada e da consulta; resultados históricos locais não comprovam cobertura
+Oracle no GitHub Actions. A execução hospedada deste ajuste não foi verificada.

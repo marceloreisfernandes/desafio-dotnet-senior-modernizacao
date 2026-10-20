@@ -49,10 +49,15 @@ public sealed class RoutingConfiguration(string path)
 
         public RoutingMode Select(string provider)
         {
-            if (KillSwitch || !Operations.TryGetValue("ConsultarNfse", out var rule) || rule.Mode == "LEGACY" ||
+            if (KillSwitch || !Operations.TryGetValue("ConsultarNfse", out var rule) || rule.Mode is "legado" or "LEGACY" ||
                 (rule.Providers.Length != 0 && !rule.Providers.Contains(provider, StringComparer.Ordinal)) ||
                 Bucket(provider) >= rule.Percentage) return RoutingMode.LEGACY;
-            return rule.Mode == "SHADOW" ? RoutingMode.SHADOW : RoutingMode.NEW;
+            return rule.Mode switch
+            {
+                "sombra" or "SHADOW" => RoutingMode.SHADOW,
+                "novo" or "NEW" => RoutingMode.NEW,
+                _ => RoutingMode.LEGACY
+            };
         }
     }
 
@@ -73,7 +78,7 @@ public sealed class RoutingConfiguration(string path)
             if (HasDuplicates(document.RootElement)) return Legacy();
             var snapshot = JsonSerializer.Deserialize<Snapshot>(bytes.AsSpan(0, count), Json);
             if (snapshot?.Operations is null || snapshot.Operations.Any(pair =>
-                pair.Key != "ConsultarNfse" || pair.Value is null || pair.Value.Mode is not ("LEGACY" or "SHADOW" or "NEW") ||
+                pair.Key != "ConsultarNfse" || pair.Value is null || pair.Value.Mode is not ("legado" or "sombra" or "novo" or "LEGACY" or "SHADOW" or "NEW") ||
                 pair.Value.Percentage is < 0 or > 100 || pair.Value.Providers is null ||
                 pair.Value.Providers.Any(p => string.IsNullOrEmpty(p) || p.Length > 32 || p.Any(c => c is < '0' or > '9'))))
                 return Legacy();

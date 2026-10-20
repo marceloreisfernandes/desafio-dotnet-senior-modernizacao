@@ -2,7 +2,7 @@
   "KillSwitch": true,
   "Operations": {
     "ConsultarNfse": {
-      "Mode": "LEGACY",
+      "Mode": "legado",
       "Percentage": 0,
       "Providers": []
     }

@@ -27,22 +27,24 @@ public sealed class RoutingTests
         "<DataFinal>2026-10-31</DataFinal></PeriodoEmissao>" + extra + "</ConsultarNfseEnvio>") +
         "</inputXML></ConsultarNfseRequest></soap:Body></soap:Envelope>";
 
-    [TestMethod]
-    public async Task DefaultLiveModesAllowlistPercentagesAndKillSwitch()
+    [DataTestMethod]
+    [DataRow("legado", "sombra", "novo")]
+    [DataRow("LEGACY", "SHADOW", "NEW")]
+    public async Task DefaultLiveModesAllowlistPercentagesAndKillSwitch(string legacy, string shadow, string modern)
     {
         await using var server = await RuntimeServer.Start();
         await server.Expect("legacy"); // Missing file.
-        server.Configure("NEW", 100, providers: ["10000002"]);
+        server.Configure(modern, 100, providers: ["10000002"]);
         await server.Expect("legacy");
-        server.Configure("NEW", 100, providers: ["10000001"]);
+        server.Configure(modern, 100, providers: ["10000001"]);
         await server.Expect("modern");
-        server.Configure("NEW", 0);
+        server.Configure(modern, 0);
         await server.Expect("legacy");
-        server.Configure("NEW", 100);
+        server.Configure(modern, 100);
         await server.Expect("modern");
-        server.Configure("LEGACY", 100);
+        server.Configure(legacy, 100);
         await server.Expect("legacy");
-        server.Configure("NEW", 50);
+        server.Configure(modern, 50);
         // Pin both sides of a stable, documented SHA-256 cohort; never use randomized GetHashCode.
         const string low = "10000001"; // Independently calculated SHA-256 bucket 0.
         const string high = "10000002"; // Independently calculated SHA-256 bucket 76.
@@ -53,13 +55,13 @@ public sealed class RoutingTests
         }
         Assert.AreEqual(0, RoutingConfiguration.Bucket("10000001"));
         Assert.AreEqual(76, RoutingConfiguration.Bucket("10000002"));
-        server.Configure("SHADOW", 100);
+        server.Configure(shadow, 100);
         await server.Expect("legacy");
         await server.WaitLog("unexpected-divergence");
-        server.Configure("NEW", 100);
+        server.Configure(modern, 100);
         await server.Expect("modern");
         var watch = Stopwatch.StartNew();
-        server.Configure("NEW", 100, kill: true);
+        server.Configure(modern, 100, kill: true);
         await server.Expect("legacy");
         Assert.IsTrue(watch.Elapsed < TimeSpan.FromSeconds(2));
         Console.WriteLine($"Live LEGACY→NEW→LEGACY, allowlist, 0/50/100 and kill switch: {watch.ElapsedMilliseconds}ms; same process.");
@@ -78,7 +80,7 @@ public sealed class RoutingTests
     public async Task InvalidConfigurationRevokesPreviousNew(string json)
     {
         await using var server = await RuntimeServer.Start();
-        server.Configure("NEW", 100);
+        server.Configure("novo", 100);
         await server.Expect("modern");
         File.WriteAllText(server.FilePath, json);
         await server.Expect("legacy");
@@ -88,7 +90,7 @@ public sealed class RoutingTests
     public async Task DeletedAndOversizedConfigurationFailLegacy()
     {
         await using var server = await RuntimeServer.Start();
-        server.Configure("NEW", 100);
+        server.Configure("novo", 100);
         await server.Expect("modern");
         File.Delete(server.FilePath);
         await server.Expect("legacy");
@@ -97,7 +99,9 @@ public sealed class RoutingTests
     }
 
     [DataTestMethod]
+    [DataRow("novo")]
     [DataRow("NEW")]
+    [DataRow("sombra")]
     [DataRow("SHADOW")]
     public async Task AllOtherActionsRemainSingleAttemptLegacy(string mode)
     {
