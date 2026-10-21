@@ -14,8 +14,9 @@ namespace NotaCarioca.Consulta
             Func<ConsultaSolicitada, CancellationToken, Task<ResultadoConsulta>>? executar = null)
         {
             var builder = WebApplication.CreateBuilder(args);
+            Telemetry.Configure(builder);
             builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 1_048_576);
-            builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.Warning);
+            builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.None);
             builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             var connectionString = builder.Configuration["NFSE_CONNECTION_STRING"];
             if (executar is null && string.IsNullOrWhiteSpace(connectionString))
@@ -36,7 +37,7 @@ namespace NotaCarioca.Consulta
                     var unavailable = ex is OracleException or TimeoutException;
                     // Do not log SQL, connection strings, request queries, documents or exception text.
                     app.Logger.LogWarning("Consulta falhou; categoria={Categoria} traceId={TraceId}",
-                        unavailable ? "dependencia" : "interno", context.TraceIdentifier);
+                        unavailable ? "dependencia" : "interno", System.Diagnostics.Activity.Current?.TraceId.ToString());
                     if (context.Request.Path == "/NfseWS.asmx")
                     {
                         context.Response.StatusCode = 500;

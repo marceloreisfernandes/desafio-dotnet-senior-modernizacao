@@ -1,4 +1,5 @@
 using System.Data;
+using System.Diagnostics;
 using Oracle.ManagedDataAccess.Client;
 
 namespace NotaCarioca.Consulta;
@@ -34,6 +35,8 @@ public sealed class OracleConsulta(string connectionString)
 
     private static async Task<Prestador?> BuscarPrestador(OracleConnection connection, string im, CancellationToken ct)
     {
+        using var span = Telemetry.Source.StartActivity("Oracle SELECT prestador", ActivityKind.Client);
+        span?.SetTag("db.system.name", "oracle");
         using var command = Command(connection,
             "SELECT ID, ATIVO FROM CONTRIBUINTES WHERE INSCRICAO_MUNICIPAL = :im");
         command.Parameters.Add("im", OracleDbType.Varchar2, im, ParameterDirection.Input);
@@ -43,6 +46,8 @@ public sealed class OracleConsulta(string connectionString)
 
     private static async Task<PaginaNfse> BuscarNotas(OracleConnection connection, ConsultaValidada query, CancellationToken ct)
     {
+        using var span = Telemetry.Source.StartActivity("Oracle SELECT nfse", ActivityKind.Client);
+        span?.SetTag("db.system.name", "oracle");
         // Only fixed SQL fragments are composed; every value is bound with its Oracle type.
         var recipientFilter = query.DocumentoTomador is null ? "" : " AND n.TOMADOR_DOCUMENTO = :doc";
         var competenceFilter = query.Periodo.CompetenciaMaxima is null ? "" : " AND n.COMPETENCIA <= :competencia";

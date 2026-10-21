@@ -44,6 +44,9 @@ services:
       Legacy__TimeoutSeconds: "${LEGACY_TIMEOUT_SECONDS:-660}"
       Modern__BaseUrl: http://consulta:8080
       Routing__File: /app/routing/routing.json
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://observabilidade:18889
+      OTEL_METRIC_EXPORT_INTERVAL: "5000"
+      OTEL_EXPORTER_OTLP_TIMEOUT: "1000"
     volumes:
       # Mount the directory so atomic file replacement is visible inside the container.
       - ./fachada/config:/app/routing:ro
@@ -61,12 +64,26 @@ services:
       TZ: America/Sao_Paulo
       ASPNETCORE_URLS: http://+:8080
       NFSE_CONNECTION_STRING: "User Id=NFSE_OWNER;Password=nfse_dev_123;Data Source=oracle:1521/FREEPDB1;Min Pool Size=0;Max Pool Size=10;Connection Timeout=10"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://observabilidade:18889
+      OTEL_METRIC_EXPORT_INTERVAL: "5000"
+      OTEL_EXPORTER_OTLP_TIMEOUT: "1000"
     mem_limit: 512m
     expose:
       - "8080"
     depends_on:
       oracle:
         condition: service_healthy
+
+  # Standalone OTLP viewer, in-memory data, no AppHost or additional database.
+  observabilidade:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:9.5.0
+    environment:
+      ASPIRE_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: "true"
+    ports:
+      - "127.0.0.1:18888:18888"
+    expose:
+      - "18889"
+    mem_limit: 512m
 
 volumes:
   oracle-data:

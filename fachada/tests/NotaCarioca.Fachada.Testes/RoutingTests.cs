@@ -87,6 +87,89 @@ public sealed class RoutingTests
     }
 
     [TestMethod]
+    public async Task TelemetryPreservesW3CContextAcrossLegacyNewAndShadowWithBoundedLabels()
+    {
+        var measurements = new ConcurrentQueue<(string Name, string Tags)>();
+        using var listener = new System.Diagnostics.Metrics.MeterListener();
+        listener.InstrumentPublished = (instrument, l) =>
+        {
+            if (instrument.Meter.Name == Telemetry.Name) l.EnableMeasurementEvents(instrument);
+        };
+        listener.SetMeasurementEventCallback<long>((i, v, tags, _) =>
+        {
+            if (v > 0) measurements.Enqueue((i.Name, string.Join(";", tags.ToArray().Select(t => t.Key + "=" + t.Value))));
+        });
+        listener.SetMeasurementEventCallback<double>((i, v, tags, _) =>
+            measurements.Enqueue((i.Name, string.Join(";", tags.ToArray().Select(t => t.Key + "=" + t.Value)))));
+        listener.Start();
+        var parents = new ConcurrentQueue<string>();
+        await using var server = await RuntimeServer.Start(modernHandler: async c =>
+        {
+            Assert.IsFalse(c.Request.Headers.ContainsKey("baggage"));
+            parents.Enqueue(c.Request.Headers["traceparent"].ToString());
+            await c.Response.WriteAsync("legacy");
+        });
+        server.LegacyHandler = async c =>
+        {
+            Assert.IsFalse(c.Request.Headers.ContainsKey("baggage"));
+            parents.Enqueue(c.Request.Headers["traceparent"].ToString());
+            await c.Response.WriteAsync("legacy");
+        };
+        const string traceId = "1234567890abcdef1234567890abcdef";
+        const string parentId = "0123456789abcdef";
+        foreach (var mode in new[] { "LEGACY", "NEW", "SHADOW" })
+        {
+            server.Configure(mode, 100);
+            using var request = Request(Envelope());
+            request.Headers.Add("traceparent", "00-" + traceId + "-" + parentId + "-01");
+            request.Headers.Add("baggage", "private=must-not-propagate");
+            using var response = await server.Client.SendAsync(request);
+            Assert.AreEqual("legacy", await response.Content.ReadAsStringAsync());
+        }
+        await server.WaitLog("parity");
+        Assert.AreEqual(4, parents.Count);
+        foreach (var parent in parents)
+        {
+            Assert.IsTrue(ActivityContext.TryParse(parent, null, out var context));
+            Assert.AreEqual(traceId, context.TraceId.ToString());
+            Assert.AreNotEqual(parentId, context.SpanId.ToString(), "Must forward the outgoing span, not the caller span.");
+        }
+        foreach (var mode in new[] { "LEGACY", "NEW", "SHADOW" })
+            Assert.IsTrue(measurements.Any(m => m.Name == "nfse.soap.requests" &&
+                m.Tags == "soap.operation=ConsultarNfse;routing.mode=" + mode));
+        Assert.IsTrue(measurements.Any(m => m.Name == "nfse.soap.duration"));
+        Assert.IsTrue(measurements.Any(m => m.Name == "nfse.shadow.observations" && m.Tags == "shadow.result=parity"));
+        Assert.IsFalse(measurements.Any(m => m.Tags.Contains("10000001") || m.Tags.Contains("private")));
+        Assert.AreEqual("other", Telemetry.Operation("sensitive-arbitrary-action"));
+
+        server.ModernHandler = c => c.Response.WriteAsync("different");
+        await server.Expect("legacy");
+        await server.WaitLog("unexpected-divergence");
+        server.LegacyHandler = c => c.Response.WriteAsync(Reply(
+            "<ConsultarNfseResposta><ListaNfse><CompNfse/></ListaNfse></ConsultarNfseResposta>"));
+        server.ModernHandler = c => c.Response.WriteAsync(Reply(
+            "<ConsultarNfseResposta><ListaMensagemRetorno><MensagemRetorno><Codigo>E001</Codigo>" +
+            "<Mensagem>XML mal formado ou inválido.</Mensagem><Correcao>Verifique a estrutura do XML enviado.</Correcao>" +
+            "</MensagemRetorno></ListaMensagemRetorno></ConsultarNfseResposta>"));
+        using (var response = await server.Send(Envelope(extra: "<Extra>&#1;</Extra>")))
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        await server.WaitLog("expected-strict-xml");
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        server.ModernHandler = async c => { await release.Task; await c.Response.WriteAsync("legacy"); };
+        try
+        {
+            // Two occupied shadow reservations force the third observation to be dropped.
+            for (var i = 0; i < 3; i++)
+                using (var response = await server.Send(Envelope()))
+                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            await server.WaitLog("capacity-skipped");
+            foreach (var result in new[] { "parity", "expected-divergence", "unexpected-divergence", "dropped" })
+                Assert.IsTrue(measurements.Any(m => m.Name == "nfse.shadow.observations" && m.Tags == "shadow.result=" + result));
+        }
+        finally { release.TrySetResult(); }
+    }
+
+    [TestMethod]
     public async Task DeletedAndOversizedConfigurationFailLegacy()
     {
         await using var server = await RuntimeServer.Start();

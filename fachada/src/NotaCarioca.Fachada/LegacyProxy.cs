@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using OpenTelemetry.Context.Propagation;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Extensions.Primitives;
@@ -23,6 +25,8 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
         string upstream = "legacy", int? timeoutSeconds = null, ResponseCapture? capture = null,
         CancellationToken budget = default)
     {
+        using var span = Telemetry.Source.StartActivity("HTTP " + upstream, ActivityKind.Client);
+        span?.SetTag("upstream", upstream);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(context.RequestAborted, budget);
         deadline.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds ?? options.TimeoutSeconds));
         var token = deadline.Token;
@@ -34,6 +38,7 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
         {
             using var request = new HttpRequestMessage(new HttpMethod(context.Request.Method), pathAndQuery);
             var excluded = HopHeaders(context.Request.Headers.Connection.Select(v => v ?? ""));
+            excluded.UnionWith(["traceparent", "tracestate", "baggage"]);
             excluded.Add("Host"); // The transport addresses the configured upstream, never a client supplied host.
             if (wsdl)
             {
@@ -51,6 +56,8 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
                     request.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
             }
 
+            new TraceContextPropagator().Inject(new PropagationContext(Activity.Current?.Context ?? default, default),
+                request, (message, key, value) => message.Headers.TryAddWithoutValidation(key, value));
             using var client = clients.CreateClient(upstream);
             using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
             // Only WSDL is reserialized. Optional bounded shadow capture preserves the SOAP bytes.
@@ -58,6 +65,8 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
             if (wsdl && response.IsSuccessStatusCode)
                 publicWsdl = await RewriteWsdlAsync(response.Content, token);
 
+            span?.SetTag("http.response.status_code", (int)response.StatusCode);
+            if (!response.IsSuccessStatusCode) span?.SetStatus(ActivityStatusCode.Error);
             context.Response.StatusCode = (int)response.StatusCode;
             capture?.Start(response);
             var responseExcluded = HopHeaders(response.Headers.TryGetValues("Connection", out var values) ? values : []);
@@ -89,15 +98,18 @@ public sealed class LegacyProxy(IHttpClientFactory clients, ProxyOptions options
         }
         catch (OperationCanceledException) when (context.RequestAborted.IsCancellationRequested)
         {
+            span?.SetStatus(ActivityStatusCode.Error);
             context.Abort();
         }
         catch (OperationCanceledException)
         {
+            span?.SetStatus(ActivityStatusCode.Error);
             await FailAsync(context, StatusCodes.Status504GatewayTimeout, upstream == "legacy" ?
                 "Tempo limite do legado excedido." : "Tempo limite da consulta excedido.");
         }
         catch (Exception ex) when (ex is HttpRequestException or IOException or XmlException or InvalidDataException)
         {
+            span?.SetStatus(ActivityStatusCode.Error);
             await FailAsync(context, StatusCodes.Status502BadGateway, upstream == "legacy" ?
                 "Falha de comunicação com o legado." : "Falha de comunicação com a consulta.");
         }

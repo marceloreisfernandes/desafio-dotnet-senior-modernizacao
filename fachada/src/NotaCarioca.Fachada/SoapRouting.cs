@@ -16,6 +16,26 @@ public sealed class SoapRouting(RoutingConfiguration configuration, LegacyProxy 
 
     public async Task ForwardAsync(HttpContext context)
     {
+        var started = Stopwatch.GetTimestamp();
+        var operation = Telemetry.Operation(context.Request.Headers["SOAPAction"].ToString());
+        context.Items["routing.mode"] = "LEGACY";
+        Activity.Current?.SetTag("soap.operation", operation);
+        try { await RouteAsync(context); }
+        finally
+        {
+            var mode = (string)context.Items["routing.mode"]!;
+            Activity.Current?.SetTag("routing.mode", mode);
+            var tags = new TagList { { "soap.operation", operation }, { "routing.mode", mode } };
+            Telemetry.Requests.Add(1, tags);
+            Telemetry.Duration.Record(Stopwatch.GetElapsedTime(started).TotalSeconds, tags);
+            context.RequestServices.GetRequiredService<ILogger<SoapRouting>>().LogInformation(
+                "SOAP {Operation} {RoutingMode} status={Status} TraceId={TraceId}",
+                operation, mode, context.Response.StatusCode, Activity.Current?.TraceId.ToString());
+        }
+    }
+
+    private async Task RouteAsync(HttpContext context)
+    {
         var path = "/NfseWS.asmx" + context.Request.QueryString;
         var snapshot = configuration.Read();
         // Unknown actions, SOAP 1.2, compressed/chunked/large bodies and noncanonical queries stay opaque.
@@ -50,6 +70,8 @@ public sealed class SoapRouting(RoutingConfiguration configuration, LegacyProxy 
             var metadata = Inspect(bytes);
             // Re-read after upload/inspection so a kill switch changed during upload also takes effect.
             var mode = metadata is null ? RoutingMode.LEGACY : configuration.Read().Select(metadata.Provider);
+            context.Items["routing.mode"] = mode.ToString();
+            Activity.Current?.SetTag("routing.mode", mode.ToString());
             if (mode == RoutingMode.NEW)
             {
                 // Include inspection/upload time in the selected NEW transport budget as well.
@@ -68,9 +90,9 @@ public sealed class SoapRouting(RoutingConfiguration configuration, LegacyProxy 
                 {
                     await proxy.ForwardAsync(context, path, capture: capture, budget: budget.Token);
                     if (capture.Complete && !capture.Overflow && !context.RequestAborted.IsCancellationRequested)
-                        submitted = shadow.Submit(new(bytes, context.Request.ContentType!, metadata!, capture));
+                        submitted = shadow.Submit(new(bytes, context.Request.ContentType!, metadata!, capture, Activity.Current?.Context ?? default));
                 }
-                finally { if (!submitted) shadow.Release(); }
+                finally { if (!submitted) { Telemetry.ShadowResult("capture-or-queue"); shadow.Release(); } }
             }
             else await proxy.ForwardAsync(context, path, budget: budget.Token);
         }

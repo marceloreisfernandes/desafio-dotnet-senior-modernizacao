@@ -10,10 +10,11 @@ namespace NotaCarioca.Fachada
         public static WebApplication Build(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            Telemetry.Configure(builder);
             // Match the legacy host: large RPS batches must remain accepted.
             builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = null);
             // Framework request logs can contain query strings and sensitive headers.
-            builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.Warning);
+            builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.None);
             builder.Logging.AddFilter("System.Net.Http.HttpClient", LogLevel.None);
 
             var options = new ProxyOptions();
@@ -36,6 +37,7 @@ namespace NotaCarioca.Fachada
                 client.Timeout = Timeout.InfiniteTimeSpan;
             }).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
             {
+                ActivityHeadersPropagator = System.Diagnostics.DistributedContextPropagator.CreateNoOutputPropagator(),
                 AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None,
                 UseCookies = false, UseProxy = false, ConnectTimeout = TimeSpan.FromSeconds(5),
                 PooledConnectionLifetime = TimeSpan.FromMinutes(5)
@@ -47,6 +49,7 @@ namespace NotaCarioca.Fachada
                 client.Timeout = Timeout.InfiniteTimeSpan;
             }).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
             {
+                ActivityHeadersPropagator = System.Diagnostics.DistributedContextPropagator.CreateNoOutputPropagator(),
                 AllowAutoRedirect = false,
                 AutomaticDecompression = DecompressionMethods.None,
                 UseCookies = false,
@@ -56,6 +59,11 @@ namespace NotaCarioca.Fachada
             }); // No retry/resilience handler: a SOAP POST is sent once.
 
             var app = builder.Build();
+            app.Lifetime.ApplicationStarted.Register(() =>
+            {
+                foreach (var result in new[] { "parity", "expected-divergence", "unexpected-divergence", "dropped" })
+                    Telemetry.Shadow.Add(0, new KeyValuePair<string, object?>("shadow.result", result));
+            });
             app.MapGet("/health/live", () => Results.Text("OK"));
             app.MapGet("/health", (HttpContext ctx, LegacyProxy proxy) => proxy.ForwardAsync(ctx, "/health"));
             app.MapGet("/health/ready", (HttpContext ctx, LegacyProxy proxy) => proxy.ForwardAsync(ctx, "/health"));

@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using OpenTelemetry.Context.Propagation;
 using System.Threading.Channels;
 using System.Xml;
 using System.Xml.Linq;
@@ -32,7 +34,7 @@ public sealed class ResponseCapture
     }
 }
 
-public sealed record ShadowWork(byte[] Request, string ContentType, RoutingMetadata Metadata, ResponseCapture Legacy);
+public sealed record ShadowWork(byte[] Request, string ContentType, RoutingMetadata Metadata, ResponseCapture Legacy, ActivityContext Parent = default);
 
 // At most N reservations (including legacy requests still running), N workers and N queue entries.
 // No Task.Run per request, no retries, no orphaned work when a deadline expires.
@@ -57,6 +59,7 @@ public sealed class ShadowConsultation : BackgroundService
     public bool TryReserve()
     {
         var reserved = slots.Wait(0);
+        if (!reserved) Telemetry.ShadowResult("capacity-skipped");
         if (!reserved) logger.LogInformation("Sombra ConsultarNfse: {Resultado}", "capacity-skipped");
         return reserved;
     }
@@ -72,6 +75,7 @@ public sealed class ShadowConsultation : BackgroundService
         {
             await foreach (var work in queue.Reader.ReadAllAsync(stoppingToken))
             {
+                using var span = Telemetry.Source.StartActivity("shadow ConsultarNfse", ActivityKind.Internal, work.Parent);
                 try
                 {
                     using var deadline = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
@@ -81,8 +85,13 @@ public sealed class ShadowConsultation : BackgroundService
                     request.Headers.TryAddWithoutValidation("SOAPAction", '"' + SoapRouting.Action + '"');
                     request.Content = new ByteArrayContent(work.Request);
                     request.Content.Headers.TryAddWithoutValidation("Content-Type", work.ContentType);
-                    // Deliberately forward no cookies, credentials, caller headers or request context.
+                    // Only W3C trace context crosses the worker boundary; no baggage or caller credentials.
+                    using var http = Telemetry.Source.StartActivity("HTTP modern", ActivityKind.Client);
+                    http?.SetTag("upstream", "modern");
+                    new TraceContextPropagator().Inject(new PropagationContext(Activity.Current?.Context ?? default, default),
+                        request, (message, key, value) => message.Headers.TryAddWithoutValidation(key, value));
                     using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, deadline.Token);
+                    http?.SetTag("http.response.status_code", (int)response.StatusCode);
                     var capture = new ResponseCapture();
                     capture.Start(response);
                     await using var stream = await response.Content.ReadAsStreamAsync(deadline.Token);
@@ -91,12 +100,15 @@ public sealed class ShadowConsultation : BackgroundService
                     while (!capture.Overflow && (count = await stream.ReadAsync(buffer, deadline.Token)) != 0)
                         capture.Append(buffer.AsSpan(0, count));
                     var result = capture.Overflow ? "response-limit" : Compare(work.Metadata, work.Legacy, capture);
+                    Telemetry.ShadowResult(result);
                     logger.LogInformation("Sombra ConsultarNfse: {Resultado}", result);
                 }
                 catch (OperationCanceledException)
-                { logger.LogInformation("Sombra ConsultarNfse: {Resultado}", "timeout-or-stop"); }
+                { Telemetry.ShadowResult("timeout-or-stop"); span?.SetStatus(ActivityStatusCode.Error); logger.LogInformation("Sombra ConsultarNfse: {Resultado}", "timeout-or-stop"); }
                 catch (Exception)
                 {
+                    Telemetry.ShadowResult("failure");
+                    span?.SetStatus(ActivityStatusCode.Error);
                     // Observe every worker failure, without exception messages, identifiers or fiscal data.
                     logger.LogWarning("Sombra ConsultarNfse: {Resultado}", "failure");
                 }
@@ -104,7 +116,7 @@ public sealed class ShadowConsultation : BackgroundService
             }
         }
         catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) { }
-        finally { while (queue.Reader.TryRead(out _)) Release(); }
+        finally { while (queue.Reader.TryRead(out _)) { Telemetry.ShadowResult("stop"); Release(); } }
     }
 
     public static string Compare(RoutingMetadata metadata, ResponseCapture legacy, ResponseCapture modern)
